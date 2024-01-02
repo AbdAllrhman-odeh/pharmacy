@@ -531,7 +531,10 @@ body {
 }
 /*end for the edit button*/
 
-
+/*for the helath insu..*/
+.hi{
+	margin:12px;
+}
 
 
 @media screen and (max-width: 768px) {

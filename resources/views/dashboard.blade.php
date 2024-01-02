@@ -21,27 +21,33 @@
 		</a>
 		<ul class="side-menu top">
 			<li class="active">
-				<a href="#">
+				<a href="dashboard">
 					<i class='bx bxs-dashboard' ></i>
 					<span class="text">Dashboard</span>
 				</a>
 			</li>
-			<li>
-				<a href="#">
+			<li >
+				<a href="myStore">
 					<i class='bx bxs-shopping-bag-alt' ></i>
 					<span class="text">My Store</span>
 				</a>
 			</li>
 			<li>
-				<a href="#">
+				<a href="orderHistory">
 					<i class='bx bxs-doughnut-chart' ></i>
-					<span class="text">Analytics</span>
+					<span class="text">Order History</span>
 				</a>
 			</li>
 			<li>
+				<a href="addDrug">
+                    <i class="bx fa fa-plus" aria-hidden="true"></i>
+					<span class="text">Add Medicines</span>
+				</a>
+			</li>
+            <li>
 				<a href="#">
-					<i class='bx bxs-message-dots' ></i>
-					<span class="text">Message</span>
+                    <i class="fa-solid fa-hospital-user hi"></i>
+					<span class="text">Health Insurance</span>
 				</a>
 			</li>
             <hr>

@@ -31,7 +31,7 @@
 					<span class="text">My Store</span>
 				</a>
 			</li>
-			<li>
+			<li class="active">
 				<a href="#">
 					<i class='bx bxs-doughnut-chart' ></i>
 					<span class="text">Order History</span>
@@ -44,7 +44,7 @@
 				</a>
 			</li>
             <hr>
-            <li class="active">
+            <li>
 				<a href="#">
 					<i class='bx bxs-group'></i>
 					<span class="text">user1</span>
@@ -104,7 +104,7 @@
 		<main>
 			<div class="head-title">
 				<div class="left">
-					<h1>System</h1>
+					<h1>Order History</h1>
 					<ul class="breadcrumb">
 						<li>
 							<a href="#">System</a>
@@ -124,7 +124,7 @@
 			<div class="table-data">
 				<div class="order">
 					<div class="head">
-						<h3>Drug on the store</h3>
+						<h3>Orders history</h3>
 						<i class='bx bx-search' ></i>
 						<i class='bx bx-filter' ></i>
 					</div>

@@ -34,6 +34,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/user',function(){
         return view('user');
     });
+
+    Route::get('/orderHistory',function(){
+        return view('orderHistory');
+    });
+
+    Route::get('/addDrug',function(){
+        return view('addDrug');
+    });
+
+    Route::get('/healthInsurance',function(){
+        return view('healthInsurance');
+    });
 });
 
 require __DIR__.'/auth.php';

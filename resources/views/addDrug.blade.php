@@ -5,13 +5,12 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	<!-- Boxicons -->
-	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
 	<!-- My CSS -->
 	<link rel="stylesheet" href="style.css">
 	<title>Admin</title>
 </head>
 <body>
-
 	<!-- SIDEBAR -->
 	<section id="sidebar">
 		<a href="#" class="brand">
@@ -20,31 +19,43 @@
 		</a>
 		<ul class="side-menu top">
 			<li>
-				<a href="#">
+				<a href="dashboard">
 					<i class='bx bxs-dashboard' ></i>
 					<span class="text">Dashboard</span>
 				</a>
 			</li>
 			<li >
-				<a href="#">
+				<a href="myStore">
 					<i class='bx bxs-shopping-bag-alt' ></i>
 					<span class="text">My Store</span>
 				</a>
 			</li>
 			<li>
-				<a href="#">
+				<a href="orderHistory">
 					<i class='bx bxs-doughnut-chart' ></i>
 					<span class="text">Order History</span>
 				</a>
 			</li>
-			<li>
+			<li class="active">
+				<a href="addDrug">
+                    <i class="bx fa fa-plus" aria-hidden="true"></i>
+					<span class="text">Add Medicines</span>
+				</a>
+			</li>
+            <li>
+				<a href="healthInsurance">
+                    <i class="fa-solid fa-hospital-user hi"></i>
+					<span class="text">Health Insurance</span>
+				</a>
+			</li>
+            <li>
 				<a href="#">
-					<i class='bx bxs-message-dots' ></i>
-					<span class="text">Message</span>
+                    <i class="fa fa-exchange hi" aria-hidden="true"></i>
+					<span class="text">Edit Alternative Medicines</span>
 				</a>
 			</li>
             <hr>
-            <li class="active">
+            <li>
 				<a href="#">
 					<i class='bx bxs-group'></i>
 					<span class="text">user1</span>
@@ -104,7 +115,7 @@
 		<main>
 			<div class="head-title">
 				<div class="left">
-					<h1>System</h1>
+					<h1>Order History</h1>
 					<ul class="breadcrumb">
 						<li>
 							<a href="#">System</a>
@@ -115,16 +126,13 @@
 						</li>
 					</ul>
 				</div>
-                <div class="right">
-                    <span class="status completed"><a href="" style="color:white; font-size:15px;">Edit Information</a></span>
-                </div>
 			</div>
 
 
 			<div class="table-data">
 				<div class="order">
 					<div class="head">
-						<h3>Drug on the store</h3>
+						<h3>Orders history</h3>
 						<i class='bx bx-search' ></i>
 						<i class='bx bx-filter' ></i>
 					</div>
