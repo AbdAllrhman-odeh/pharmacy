@@ -4,17 +4,12 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<!-- Boxicons -->
-	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-	<!-- My CSS -->
-	<link rel="stylesheet" href="style.css">
-
 	<title>Admin</title>
 </head>
 <body>
 
 	<!-- SIDEBAR -->
-	<section id="sidebar">
+	{{-- <section id="sidebar">
 		<a href="#" class="brand">
 			<i class='bx bxs-smile'></i>
 			<span class="text">Admin</span>
@@ -73,13 +68,16 @@
 				</a>
 			</li>
 		</ul>
-	</section>
+	</section> --}}
+	@extends('layouts.master')
+	@section('item2')active @endsection
+
 	<!-- SIDEBAR -->
 
 
 
 	<!-- CONTENT -->
-	<section id="content">
+	@section('content')
 		<!-- NAVBAR -->
 		<nav>
 			<i class='bx bx-menu' ></i>
@@ -176,7 +174,7 @@
 			</div>
 		</main>
 		<!-- MAIN -->
-	</section>
+	@endsection
 	<!-- CONTENT -->
 	
 

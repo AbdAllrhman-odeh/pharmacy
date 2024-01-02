@@ -3,17 +3,12 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-	<!-- Boxicons -->
-	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-	<!-- My CSS -->
-	<link rel="stylesheet" href="style.css">
 	<title>Admin</title>
 </head>
 <body>
 
 	<!-- SIDEBAR -->
-	<section id="sidebar">
+	{{-- <section id="sidebar">
 		<a href="#" class="brand">
 			<i class='bx bxs-smile'></i>
 			<span class="text">Admin</span>
@@ -72,113 +67,116 @@
 				</a>
 			</li>
 		</ul>
-	</section>
+	</section> --}}
+	@extends('layouts.master')
+	@section('item3')active @endsection
+
 	<!-- SIDEBAR -->
 
 
 
 	<!-- CONTENT -->
-	<section id="content">
-		<!-- NAVBAR -->
-		<nav>
-			<i class='bx bx-menu' ></i>
-			<a href="#" class="nav-link">Categories</a>
-			<form action="#">
-				<div class="form-input">
-					<input type="search" placeholder="Search...">
-					<button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
-				</div>
-			</form>
-			<!-- mode -->
-			<input type="checkbox" id="switch-mode" hidden>
-			<label for="switch-mode" class="switch-mode"></label>
-			<!-- mode -->
-
-			<a href="#" class="profile">
-				<img src="img/admin.png">
-			</a>
-		</nav>
-		<!-- NAVBAR -->
-
-		<!-- MAIN -->
-		<main>
-			<div class="head-title">
-				<div class="left">
-					<h1>Order History</h1>
-					<ul class="breadcrumb">
-						<li>
-							<a href="#">System</a>
-						</li>
-						<li><i class='bx bx-chevron-right' ></i></li>
-						<li>
-							<a class="active" href="#">Name</a>
-						</li>
-					</ul>
-				</div>
-                <div class="right">
-                    <span class="status completed"><a href="" style="color:white; font-size:15px;">Edit Information</a></span>
-                </div>
-			</div>
-
-
-			<div class="table-data">
-				<div class="order">
-					<div class="head">
-						<h3>Orders history</h3>
-						<i class='bx bx-search' ></i>
-						<i class='bx bx-filter' ></i>
+	@section('content')
+			<!-- NAVBAR -->
+			<nav>
+				<i class='bx bx-menu' ></i>
+				<a href="#" class="nav-link">Categories</a>
+				<form action="#">
+					<div class="form-input">
+						<input type="search" placeholder="Search...">
+						<button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
 					</div>
-					<table>
-						<thead>
-							<tr>
-								<th>User</th>
-								<th>Date Order</th>
-								<th>Status</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>
-									<p>John Doe</p>
-								</td>
-								<td>01-10-2021</td>
-								<td><span class="status completed">Completed</span></td>
-							</tr>
-							<tr>
-								<td>
-									<p>John Doe</p>
-								</td>
-								<td>01-10-2021</td>
-								<td><span class="status pending">Pending</span></td>
-							</tr>
-							<tr>
-								<td>
-									<p>hello Doe</p>
-								</td>
-								<td>01-10-2021</td>
-								<td><span class="status process">Process</span></td>
-							</tr>
-							<tr>
-								<td>
-									<p>John Doe</p>
-								</td>
-								<td>01-10-2021</td>
-								<td><span class="status pending">Pending</span></td>
-							</tr>
-							<tr>
-								<td>
-									<p>John Doe</p>
-								</td>
-								<td>01-10-2021</td>
-								<td><span class="status completed">Completed</span></td>
-							</tr>
-						</tbody>
-					</table>
+				</form>
+				<!-- mode -->
+				<input type="checkbox" id="switch-mode" hidden>
+				<label for="switch-mode" class="switch-mode"></label>
+				<!-- mode -->
+	
+				<a href="#" class="profile">
+					<img src="img/admin.png">
+				</a>
+			</nav>
+			<!-- NAVBAR -->
+	
+			<!-- MAIN -->
+			<main>
+				<div class="head-title">
+					<div class="left">
+						<h1>Order History</h1>
+						<ul class="breadcrumb">
+							<li>
+								<a href="#">System</a>
+							</li>
+							<li><i class='bx bx-chevron-right' ></i></li>
+							<li>
+								<a class="active" href="#">Name</a>
+							</li>
+						</ul>
+					</div>
+					<div class="right">
+						<span class="status completed"><a href="" style="color:white; font-size:15px;">Edit Information</a></span>
+					</div>
 				</div>
-			</div>
-		</main>
-		<!-- MAIN -->
-	</section>
+	
+	
+				<div class="table-data">
+					<div class="order">
+						<div class="head">
+							<h3>Orders history</h3>
+							<i class='bx bx-search' ></i>
+							<i class='bx bx-filter' ></i>
+						</div>
+						<table>
+							<thead>
+								<tr>
+									<th>User</th>
+									<th>Date Order</th>
+									<th>Status</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>
+										<p>John Doe</p>
+									</td>
+									<td>01-10-2021</td>
+									<td><span class="status completed">Completed</span></td>
+								</tr>
+								<tr>
+									<td>
+										<p>John Doe</p>
+									</td>
+									<td>01-10-2021</td>
+									<td><span class="status pending">Pending</span></td>
+								</tr>
+								<tr>
+									<td>
+										<p>hello Doe</p>
+									</td>
+									<td>01-10-2021</td>
+									<td><span class="status process">Process</span></td>
+								</tr>
+								<tr>
+									<td>
+										<p>John Doe</p>
+									</td>
+									<td>01-10-2021</td>
+									<td><span class="status pending">Pending</span></td>
+								</tr>
+								<tr>
+									<td>
+										<p>John Doe</p>
+									</td>
+									<td>01-10-2021</td>
+									<td><span class="status completed">Completed</span></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</main>
+			<!-- MAIN -->
+	@endsection
 	<!-- CONTENT -->
 	
 
