@@ -54,6 +54,7 @@
 				</a>
 			</li>
             <hr>
+			<!--edit here-->
             <li class="@yield('item7')">
 				<a href="#">
 					<i class='bx bxs-group'></i>
@@ -67,6 +68,22 @@
 				</a>
 			</li>
         </ul>
+
+		<!--side menue-->
+		<ul class="side-menu">
+			<li>
+				<a href="/profile">
+					<i class='bx bxs-cog' ></i>
+					<span class="text">Settings</span>
+				</a>
+			</li>
+			<li>
+				<a href="/" class="logout">
+					<i class='bx bxs-log-out-circle' ></i>
+					<span class="text">Logout</span>
+				</a>
+			</li>
+		</ul>
     </section>
 	
 	<section id="content">
