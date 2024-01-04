@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
 
             $table->unsignedBigInteger('cahier_id');
-            $table->foreign('cahier_id')
+            $table->foreign('cashier_id')
             ->references('id')
             ->on('cashiers')
             ->onDelete('cascade');
