@@ -154,6 +154,104 @@
 											<p>John Doe</p>
 										</td>
 										<td>01-10-2021</td>
+										<td><span class="status completed">Completed</span></td>
+									</tr>
+									<tr>
+										<td>
+											<p>John Doe</p>
+										</td>
+										<td>01-10-2021</td>
+										<td><span class="status completed">Completed</span></td>
+									</tr>
+									<tr>
+										<td>
+											<p>John Doe</p>
+										</td>
+										<td>01-10-2021</td>
+										<td><span class="status completed">Completed</span></td>
+									</tr>
+									<tr>
+										<td>
+											<p>John Doe</p>
+										</td>
+										<td>01-10-2021</td>
+										<td><span class="status completed">Completed</span></td>
+									</tr>
+									<tr>
+										<td>
+											<p>John Doe</p>
+										</td>
+										<td>01-10-2021</td>
+										<td><span class="status completed">Completed</span></td>
+									</tr>
+									<tr>
+										<td>
+											<p>John Doe</p>
+										</td>
+										<td>01-10-2021</td>
+										<td><span class="status completed">Completed</span></td>
+									</tr>
+									<tr>
+										<td>
+											<p>John Doe</p>
+										</td>
+										<td>01-10-2021</td>
+										<td><span class="status completed">Completed</span></td>
+									</tr>
+									<tr>
+										<td>
+											<p>John Doe</p>
+										</td>
+										<td>01-10-2021</td>
+										<td><span class="status completed">Completed</span></td>
+									</tr>
+									<tr>
+										<td>
+											<p>John Doe</p>
+										</td>
+										<td>01-10-2021</td>
+										<td><span class="status completed">Completed</span></td>
+									</tr>
+									<tr>
+										<td>
+											<p>John Doe</p>
+										</td>
+										<td>01-10-2021</td>
+										<td><span class="status completed">Completed</span></td>
+									</tr>
+									<tr>
+										<td>
+											<p>John Doe</p>
+										</td>
+										<td>01-10-2021</td>
+										<td><span class="status completed">Completed</span></td>
+									</tr>
+									<tr>
+										<td>
+											<p>John Doe</p>
+										</td>
+										<td>01-10-2021</td>
+										<td><span class="status completed">Completed</span></td>
+									</tr>
+									<tr>
+										<td>
+											<p>John Doe</p>
+										</td>
+										<td>01-10-2021</td>
+										<td><span class="status completed">Completed</span></td>
+									</tr>
+									<tr>
+										<td>
+											<p>John Doe</p>
+										</td>
+										<td>01-10-2021</td>
+										<td><span class="status completed">Completed</span></td>
+									</tr>
+									<tr>
+										<td>
+											<p>John Doe</p>
+										</td>
+										<td>01-10-2021</td>
 										<td><span class="status pending">Pending</span></td>
 									</tr>
 									<tr>
@@ -179,6 +277,14 @@
 									</tr>
 								</tbody>
 							</table>
+							<table>
+								<thead>
+									<tr>
+										<th>User</th>
+										<th>Date Order</th>
+										<th>Status</th>
+									</tr>
+								</thead>
 						</div>
 					</div>
 				</main>
