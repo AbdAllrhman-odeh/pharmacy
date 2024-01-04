@@ -49,7 +49,7 @@
                                                 <label>Email<span class="text-danger">*</span></label>
                                                 <div class="input-group">
                                                     <div class="input-group-text"><iconify-icon icon="bi:person-fill"></iconify-icon></div>
-                                                    <input type="email" class="form-control" placeholder="Enter Your Email" id="email" name="email">
+                                                    <input type="email" class="form-control" placeholder="Enter Your Email"  name="email">
                                                 </div>
                                             </div>
     
@@ -59,7 +59,7 @@
                                                     <div class="input-group-text"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16">
                                                         <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2"/>
                                                       </svg></div>
-                                                    <input type="password" class="form-control" placeholder="Enter Your Password" name="password" id="password">
+                                                    <input type="password" class="form-control" placeholder="Enter Your Password" name="password" >
                                                 </div>
                                             </div>
     
