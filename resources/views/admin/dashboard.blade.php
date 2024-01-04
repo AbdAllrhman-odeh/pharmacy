@@ -9,7 +9,7 @@
 <body>
 
 	<!-- SIDEBAR -->
-	@extends('layouts.master')
+	@extends('layouts\master')
 	@section('item1')active @endsection
 	<!-- SIDEBAR -->
 
@@ -35,7 +35,7 @@
 		<!-- mode -->
 
 		<a href="#" class="profile">
-			<img src="img/admin.png">
+			<img src="{{asset('img/admin.png')}}">
 		</a>
 	</nav>
 	<!-- NAVBAR -->
@@ -148,7 +148,7 @@
 	<!-- CONTENT -->
 	
 
-	<script src="script.js"></script>
+	<script src="/script.js"></script>
 </body>
 </html>
 

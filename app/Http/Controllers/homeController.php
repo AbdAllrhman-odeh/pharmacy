@@ -9,34 +9,6 @@ use Illuminate\Support\Facades\Hash;
 
 class homeController extends Controller
 {
-    //check the role of the user
-    public function index()
-    {
-        //check if the user Signed in
-        if(Auth::id())
-        {
-            //get the role of the user
-            $role=Auth()->user()->role;
-
-            if($role=='user')
-            {
-                //user is an cashier
-                return view('cashiers.dashboard');
-            }
-            else if($role=='admin')
-            {
-                //admin is an cashier
-                return view('admins.dashboard');
-            }
-            else if($role=='superAdmin')
-            {
-                //user is an superAdmin
-                return view('superAdmin.dashboard');
-            }
-        }
-
-        return redirect()->back();
-    }
 
     public function create(Request $request)
     {
@@ -47,7 +19,22 @@ class homeController extends Controller
             'role'=>$request->role,
         ]);
 
-        return 'done';
+        $role=$request->role;
+        if($role=='superAdmin')
+         {
+            //superAdmin
+            return redirect()->to('superAdmin/dashboard');
+         }
+         else if($role=='admin')
+         {
+            //admin
+            return redirect()->to('admin/dashboard');
+         }
+         else if($role=='cashier')
+         {
+            //cashier
+            return redirect()->to('cashier/dashboard');
+         }
     }
 
     public function login(Request $request)
@@ -61,7 +48,24 @@ class homeController extends Controller
             $info=$request->only('email','password');
             if(Auth::attempt($info))
             {
-                return ('correct');
+               $role=Auth()->user()->role;
+
+               if($role=='superAdmin')
+               {
+                    //superAdmin
+                    return redirect()->to('superAdmin/dashboard');
+               }
+               else if($role=='admin')
+               {
+                    //admin
+                    return redirect()->to('admin/dashboard');
+               }
+               else if($role=='cashier')
+               {
+                    //cashier
+                    return redirect()->to('cashier/dashboard');
+               }
+
             }
         }
         return redirect()->back();
