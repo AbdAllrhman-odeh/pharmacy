@@ -44,14 +44,14 @@
 	<main>
 		<div class="head-title">
 			<div class="left">
-				<h1>Dashboard</h1>
+				<h1>{{$info->pharmacy->name}}</h1>
 				<ul class="breadcrumb">
 					<li>
-						<a href="#">Dashboard</a>
+						<a href="#">{{$info->user->name}}</a>
 					</li>
 					<li><i class='bx bx-chevron-right' ></i></li>
 					<li>
-						<a class="active" href="#">Home</a>
+						<a class="active" href="#">{{$info->user->role}}</a>
 					</li>
 				</ul>
 			</div>
@@ -61,7 +61,18 @@
 			<li>
 				<i class='bx bxs-calendar-check' ></i>
 				<span class="text">
-					<h3>1020</h3>
+					<!--get the numbers of orders on this day-->
+					@php
+						$count=0;	
+					@endphp
+					@foreach ($info->order as $order)
+						@php
+						$todayDate=date('Y-M-d');
+						if($todayDate == $order->created_at->format('Y-M-d') )
+							$count++;
+						@endphp
+					@endforeach
+					<h3>{{$count}}</h3>
 					<p>Orders Today</p>
 				</span>
 			</li>
@@ -85,7 +96,6 @@
 				
 			</li>
 		</ul>
-
 
 		<div class="table-data">
 			<div class="order">
@@ -148,7 +158,6 @@
 	<!-- CONTENT -->
 	
 
-	<script src="/script.js"></script>
 </body>
 </html>
 
