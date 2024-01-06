@@ -3,6 +3,7 @@
 use App\Http\Controllers\adminController;
 use App\Http\Controllers\cashierController;
 use App\Http\Controllers\homeController;
+use App\Http\Controllers\superAdminController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
 //welcome page
 Route::get('/', function () {
     return redirect()->to('signin');
@@ -33,9 +35,17 @@ Route::get('signin',function(){
 });
 Route::post('/loginFunction',[homeController::class,'login'])->name('login');
 
+//superAdmin middleware
+Route::middleware(['superAdminMiddleware'])->group(function () {
+    
+    //superAdmin pages
+    Route::group(['prefix' => 'superAdmin'], function () {
+        Route::get('/dashboard', [superAdminController::class, 'dashboardPage']);
+    });
+});
 
-
-Route::middleware(['authMiddleware'])->group(function () {
+//admin middleware
+Route::middleware(['adminMiddleware'])->group(function () {
     
     //admin pages
     Route::group(['prefix' => 'admin'], function () {
@@ -43,7 +53,8 @@ Route::middleware(['authMiddleware'])->group(function () {
     });
 });
 
-Route::middleware(['authMiddleware2'])->group(function () {
+//cashier middleware
+Route::middleware(['cashierMiddleware'])->group(function () {
     
     //cashier pages
     Route::group(['prefix'=>'cashier'],function(){

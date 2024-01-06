@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class authMiddleware2
+class superAdminMiddleware
 {
     /**
      * Handle an incoming request.
@@ -19,7 +19,7 @@ class authMiddleware2
         if(Auth::check())
         {
             $info=auth()->user();
-            if($info->role=='cashier')
+            if($info->role=='superAdmin')
                 return $next($request);
         }
 
