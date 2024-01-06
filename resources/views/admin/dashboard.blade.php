@@ -7,13 +7,11 @@
 	<title>Admin</title>
 </head>
 <body>
-
+	{{-- {{dd($orders)}} --}}
 	<!-- SIDEBAR -->
 	@extends('layouts\master')
 	@section('item1')active @endsection
 	<!-- SIDEBAR -->
-
-
 
 	<!-- CONTENT -->
 	{{-- <section id="content">
@@ -79,7 +77,26 @@
 			<li>
 				<i class='bx bxs-dollar-circle' ></i>
 				<span class="text">
-					<h3>$2543</h3>
+				<!-- Handle the total of this day-->
+				@php
+				$total = 0;
+				@endphp
+				@foreach($orders as $order)
+					@php
+					if($todayDate==$order->created_at->format('Y-M-d'))
+					{
+					@endphp
+						@foreach($order->orderDetails as $orderDetail)
+							@php
+								$total += $orderDetail->medicine->price*$orderDetail->quantity;
+							@endphp
+						@endforeach
+					@php
+					}
+					@endphp
+				@endforeach
+			
+					<h3>${{$total}}</h3>
 					<p>Total Sales</p>
 				</span>
 			</li>
@@ -104,52 +121,63 @@
 					<i class='bx bx-search' ></i>
 					<i class='bx bx-filter' ></i>
 				</div>
+
+
+				<!--print all orders for this pharmacy-->
 				<table>
 					<thead>
 						<tr>
-							<th>User</th>
-							<th>Date Order</th>
-							<th>Status</th>
+							<th>Cashier</th>
+							<th>Medicine Name</th>
+							<th>Price</th>
+							<th>Quantity</th>
+							<th>Date & Time</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>
-								<p>John Doe</p>
-							</td>
-							<td>01-10-2021</td>
-							<td><span class="status completed">Completed</span></td>
-						</tr>
-						<tr>
-							<td>
-								<p>John Doe</p>
-							</td>
-							<td>01-10-2021</td>
-							<td><span class="status pending">Pending</span></td>
-						</tr>
-						<tr>
-							<td>
-								<p>hello Doe</p>
-							</td>
-							<td>01-10-2021</td>
-							<td><span class="status process">Process</span></td>
-						</tr>
-						<tr>
-							<td>
-								<p>John Doe</p>
-							</td>
-							<td>01-10-2021</td>
-							<td><span class="status pending">Pending</span></td>
-						</tr>
-						<tr>
-							<td>
-								<p>John Doe</p>
-							</td>
-							<td>01-10-2021</td>
-							<td><span class="status completed">Completed</span></td>
-						</tr>
+						@foreach($orders as $order)
+							<tr>
+								<td>
+									<p>
+										{{ $order->cashier_id }}
+									</p>
+								</td>
+								<td>
+									@foreach($order->orderDetails as $orderDetail)
+										<p>
+											 {{ $orderDetail->medicine->name }}
+										</p>
+									@endforeach
+								</td>
+								<td>
+									@foreach($order->orderDetails as $orderDetail)
+										<p>
+											 {{ $orderDetail->medicine->price }}$
+										</p>
+									@endforeach
+								</td>
+								<td>
+									@foreach($order->orderDetails as $orderDetail)
+										<p>
+											*{{ $orderDetail->quantity }}
+										</p>
+									@endforeach
+								</td>
+								<td>
+									{{ $order->created_at->format('Y-m-d'); }}<br>
+									{{ $order->created_at->format('h-i-s'); }}<br>
+								</td>
+							</tr>
+							@if($loop->last)
+								<tr>
+									<td colspan="5"><hr></td>
+								</tr>
+							@endif
+						@endforeach
 					</tbody>
 				</table>
+
+
 			</div>
 		</div>
 	</main>

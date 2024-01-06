@@ -17,4 +17,14 @@ class order extends Model
     ];
 
     protected $hidden="";
+
+    public function pharmacy()
+    {
+        return $this->belongsTo(Pharmacy::class,'pharmacy_id','id');
+    }
+
+    public function orderDetails()
+    {
+        return $this->hasMany(order_detalis::class,'order_id','id');
+    }
 }

@@ -35,4 +35,10 @@ class admin extends Model
     {
         return $this->hasMany(order::class,'pharmacy_id','pharmacy_id');
     }
+
+    // Admin with order details through pharmacy
+    // just get the orderDetails for this pharmacy
+    public function orders_detalis()
+    {
+        return $this->hasManyThrough(order_detalis::class, Order::class, 'pharmacy_id', 'order_id', 'pharmacy_id', 'id');    }
 }

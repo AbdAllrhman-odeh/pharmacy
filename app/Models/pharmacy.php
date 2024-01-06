@@ -16,4 +16,17 @@ class pharmacy extends Model
         'number',
     ];
     protected $hidden=[];
+
+        //pharmacy with admins
+        public function admins()
+        {
+            return $this->hasMany(admin::class,'pharmacy_id','id');
+        }
+
+
+        public function orders()
+        {
+            return $this->hasMany(Order::class,'order_id','id');
+        }
+    
 }

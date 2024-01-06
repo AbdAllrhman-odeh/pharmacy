@@ -18,4 +18,9 @@ class order_detalis extends Model
     ];
 
     protected $hidden="";
+
+    public function medicine()
+    {
+        return $this->belongsTo(Medicine::class, 'medicine_id', 'id');
+    }
 }
