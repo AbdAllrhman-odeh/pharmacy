@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Http\Requests\signInRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,56 +21,24 @@ class homeController extends Controller
             'role'=>$request->role,
         ]);
 
-        // $role=$request->role;
-        // if($role=='superAdmin')
-        //  {
-        //     //superAdmin
-        //     return redirect()->to('superAdmin/dashboard');
-        //  }
-        //  else if($role=='admin')
-        //  {
-        //     //admin
-        //     return redirect()->to('admin/dashboard');
-        //  }
-        //  else if($role=='cashier')
-        //  {
-        //     //cashier
-        //     return redirect()->to('cashier/dashboard');
-        //  }
         return redirect()->to('signin');
     }
 
-    public function login(Request $request)
+    public function login(signInRequest $request)
     {
-        $validate=request()->validate([
-            'email'=>'required',
-            'password'=>'required',
-        ]);
-        if($validate)
-        {
-            $info=$request->only('email','password');
-            if(Auth::attempt($info))
-            {
-               $role=Auth()->user()->role;
-
-               if($role=='superAdmin')
-               {
-                    //superAdmin
-                    return redirect()->to('superAdmin/dashboard');
-               }
-               else if($role=='admin')
-               {
-                    //admin
-                    return redirect()->to('admin/dashboard');
-               }
-               else if($role=='cashier')
-               {
-                    //cashier
-                    return redirect()->to('cashier/dashboard');
-               }
-
-            }
+        $rules = [
+            'email' => 'required|email|min:5|max:20',
+            'password' => 'required|string|min:5|max:15',
+        ];
+    
+        $credentials = $request->validate($rules);
+    
+        if (Auth::attempt($credentials)) {
+            $role = Auth()->user()->role;
+            return redirect()->to($role.'/dashboard');
         }
-        return redirect()->back();
+    
+        return redirect()->back()->withErrors(['login' => 'Invalid credentials']);
     }
-}
+    }
+    

@@ -50,6 +50,8 @@ Route::middleware(['adminMiddleware'])->group(function () {
     //admin pages
     Route::group(['prefix' => 'admin'], function () {
         Route::get('/dashboard', [adminController::class, 'dashboardPage']);
+        Route::get('/addCashier',[adminController::class, 'addCashierPage']);
+        Route::post('/addCashierFunction/{pharmacy_id}',[adminController::class,'addCashier'])->name('addCashierFunction');
     });
 });
 

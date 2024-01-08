@@ -51,6 +51,9 @@
                                                     <div class="input-group-text"><iconify-icon icon="bi:person-fill"></iconify-icon></div>
                                                     <input type="email" class="form-control" placeholder="Enter Your Email"  name="email">
                                                 </div>
+                                                @error('email')
+                                                    <span style="color:red;">*{{$message}}</span>
+                                                @enderror
                                             </div>
     
                                             <div class="col-12">
@@ -61,6 +64,9 @@
                                                       </svg></div>
                                                     <input type="password" class="form-control" placeholder="Enter Your Password" name="password" >
                                                 </div>
+                                                @error('password')
+                                                    <span style="color:red;">*{{$message}}</span>
+                                                @enderror
                                             </div>
     
                                             <div class="col-12">
@@ -81,6 +87,7 @@
             </div>
         </div>
     </div>
+
 </body>
 </html>
 <script>

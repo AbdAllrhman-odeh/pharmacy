@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{asset('style.css')}}">
     <!-- JS CODE :/-->
     <script src="{{asset('script.js')}}"></script>
+
 </head>
 <body>
   	<!-- SIDEBAR -->
@@ -53,15 +54,21 @@
 					<span class="text">Edit Alternative Medicines</span>
 				</a>
 			</li>
+			<li class="@yield('item7')">
+				<a href="addCashier">
+					<i class='fas fa-user-plus hi'></i>
+					<span class="text">Add Cashier</span>
+				</a>
+			</li>
             <hr>
 			<!--edit here-->
-            <li class="@yield('item7')">
+            <li class="">
 				<a href="#">
 					<i class='bx bxs-group'></i>
 					<span class="text">user1</span>
 				</a>
 			</li>
-            <li class="@yield('item8')">
+            <li class=""">
 				<a href="#">
 					<i class='bx bxs-group'></i>
 					<span class="text">user2</span>

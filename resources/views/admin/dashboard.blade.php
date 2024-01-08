@@ -7,7 +7,17 @@
 	<title>Admin</title>
 </head>
 <body>
-	{{-- {{dd($orders)}} --}}
+	{{-- {{
+		[1]info=>["id","user_id","pharmacy_id","created_at","updated_at"]
+				=>[user]=>[id,name,email,password,role,created_at,updated_at]
+				=>[pharmacy]=>[id,name,location,number,created_at,updated_at]
+				=>[order]=>[array]=>[id,cashier_id,pharamcy_id,created_at,updated_at]
+		
+			[2]orders=>[array,order]=>[id,cashier_id,pharmacy_id,created_at,updated_at]
+									=>[array,orderDetails]=>[id,order_id,medicine_id,quantity,created_at,updated_at]	
+												      	  =>[medicine]=>[id,name,chemical_Name,does,type,qunatity,price,exp_date,mfg_date,pharamcy_id,compnay_name,created_at,updated_at]
+	)}} --}}
+	
 	<!-- SIDEBAR -->
 	@extends('layouts\master')
 	@section('item1')active @endsection
