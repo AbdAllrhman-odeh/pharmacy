@@ -16,3 +16,8 @@
         [2] make an REQUEST for siginInPage
         [3] create the register page for the admin(admin can add casheris)
         [4] make the addCashier an model, and dispaly all cahiers && delete them.
+
+[1/9]   [1] remove all the previos relationShip
+        [2] create an relationship using phy model (after getting the phy_id)
+                -phy hasMany Cashiers
+                -phy hasMnay admins

@@ -17,16 +17,31 @@ class pharmacy extends Model
     ];
     protected $hidden=[];
 
-        //pharmacy with admins
-        public function admins()
+        // //pharmacy with admins
+        // public function admins()
+        // {
+        //     return $this->hasMany(admin::class,'pharmacy_id','id');
+        // }
+
+
+        // public function orders()
+        // {
+        //     return $this->hasMany(Order::class,'order_id','id');
+        // }
+
+        public function cashiers()
         {
-            return $this->hasMany(admin::class,'pharmacy_id','id');
+            return $this->hasMany(Cashier::class, 'pharmacy_id', 'id');
         }
 
+        public function admins()
+        {
+            return $this->hasMany(admin::class,'pharmacy_id', 'id');
+        }
 
         public function orders()
         {
-            return $this->hasMany(Order::class,'order_id','id');
+            return $this->hasMany(order::class,'pharmacy_id','id');
         }
     
 }

@@ -15,9 +15,20 @@ class order_detalis extends Model
         'order_id',
         'medicine_id',
         'quantity',
+        'cashier_id'
     ];
 
     protected $hidden="";
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class, 'order_id', 'id');
+    }
+
+    public function cashier()
+    {
+        return $this->belongsTo(Cashier::class, 'cashier_id', 'id');
+    }
 
     public function medicine()
     {

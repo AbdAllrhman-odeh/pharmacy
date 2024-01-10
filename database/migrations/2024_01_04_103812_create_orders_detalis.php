@@ -26,6 +26,12 @@ return new class extends Migration
             ->on('medicines')
             ->onDelete('cascade');
 
+            $table->unsignedBigInteger('cashier_id');
+            $table->foreign('cashier_id')
+                  ->references('id')
+                  ->on('cashiers')
+                  ->onDelete('cascade');
+
             $table->integer('quantity')->default('1');
             $table->timestamps();
         });

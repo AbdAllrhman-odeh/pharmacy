@@ -41,7 +41,7 @@
             <!-- Form content -->
             <div class="container">
                 <h2>Add Cashier To Our Family</h2>
-                <form action="{{route('addCashierFunction',$info->pharmacy->id)}}" method="POST">
+                <form action="{{route('addCashierFunction')}}" method="POST">
                     @csrf
                 <div class="input-field">
                     <input type="text" name="firstName" placeholder="First Name" required/>
@@ -100,13 +100,33 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Joined At</th>
-                            <th>Finish Cashier</th>
+                            <th>Edit</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        @foreach($pharmacy->cashiers as $cashier)
+                            <tr>
+                                <td>
+                                    {{$cashier->user->name}}
+                                </td>
+                                <td>
+                                    {{$cashier->user->email}}
+                                </td>
+                                <td>
+                                    @php
+                                        $createdAt=$cashier->user->created_at;
+                                        $createdAt=$createdAt->format('Y-M-d');   
+                                    @endphp
+                                    {{$createdAt}}
+                                </td>
+                                <td>
+                                    <span class="status pending"><a href="" style="color:white">edit</a></span></td>
+                                </td>
+                            </tr>
+                        @endforeach
+                        {{-- <tr>
                             <td>
-                                <p>John Doe</p>
+                                <p></p>
                             </td>
                             <td>
                                 <p>
@@ -117,7 +137,7 @@
                                 2016/06/06
                             </td>
                             <td><span class="status pending">Completed</span></td>
-                        </tr>
+                        </tr> --}}
                     </tbody>
                 </table>
             </div>

@@ -7,17 +7,18 @@
 	<title>Admin</title>
 </head>
 <body>
-	{{-- {{
-		[1]info=>["id","user_id","pharmacy_id","created_at","updated_at"]
-				=>[user]=>[id,name,email,password,role,created_at,updated_at]
-				=>[pharmacy]=>[id,name,location,number,created_at,updated_at]
-				=>[order]=>[array]=>[id,cashier_id,pharamcy_id,created_at,updated_at]
-		
-			[2]orders=>[array,order]=>[id,cashier_id,pharmacy_id,created_at,updated_at]
-									=>[array,orderDetails]=>[id,order_id,medicine_id,quantity,created_at,updated_at]	
-												      	  =>[medicine]=>[id,name,chemical_Name,does,type,qunatity,price,exp_date,mfg_date,pharamcy_id,compnay_name,created_at,updated_at]
-	)}} --}}
-	
+    <!--
+        get the admin info
+    -->
+    <?php
+        $adminName="";
+        $adminRole="";
+        foreach($pharmacy->admins as $admin)
+        {
+            $adminName=$admin->user->name;
+            $adminRole=$admin->user->role;
+        }
+    ?>
 	<!-- SIDEBAR -->
 	@extends('layouts\master')
 	@section('item1')active @endsection
@@ -52,14 +53,14 @@
 	<main>
 		<div class="head-title">
 			<div class="left">
-				<h1>{{$info->pharmacy->name}}</h1>
+				<h1>{{$pharmacy->name}}</h1>
 				<ul class="breadcrumb">
 					<li>
-						<a href="#">{{$info->user->name}}</a>
+						<a href="#">{{$adminName}}</a>
 					</li>
 					<li><i class='bx bx-chevron-right' ></i></li>
 					<li>
-						<a class="active" href="#">{{$info->user->role}}</a>
+						<a class="active" href="#">{{$adminRole}}</a>
 					</li>
 				</ul>
 			</div>
@@ -73,14 +74,17 @@
 					@php
 						$count=0;	
 					@endphp
-					@foreach ($info->order as $order)
+					@foreach ($pharmacy->orders as $order)
 						@php
 						$todayDate=date('Y-M-d');
 						if($todayDate == $order->created_at->format('Y-M-d') )
-							$count++;
+                        {
+                            $count++;
+                        }
 						@endphp
 					@endforeach
 					<h3>{{$count}}</h3>
+
 					<p>Orders Today</p>
 				</span>
 			</li>
@@ -91,7 +95,7 @@
 				@php
 				$total = 0;
 				@endphp
-				@foreach($orders as $order)
+				@foreach($pharmacy->orders as $order)
 					@php
 					if($todayDate==$order->created_at->format('Y-M-d'))
 					{
@@ -128,64 +132,72 @@
 			<div class="order">
 				<div class="head">
 					<h3>Recent Orders</h3>
-					<i class='bx bx-search' ></i>
-					<i class='bx bx-filter' ></i>
 				</div>
 
 
 				<!--print all orders for this pharmacy-->
-				<table>
-					<thead>
-						<tr>
-							<th>Cashier</th>
-							<th>Medicine Name</th>
-							<th>Price</th>
-							<th>Quantity</th>
-							<th>Date & Time</th>
-						</tr>
-					</thead>
-					<tbody>
-						@foreach($orders as $order)
-							<tr>
-								<td>
-									<p>
-										{{ $order->cashier_id }}
-									</p>
-								</td>
-								<td>
-									@foreach($order->orderDetails as $orderDetail)
-										<p>
-											 {{ $orderDetail->medicine->name }}
-										</p>
-									@endforeach
-								</td>
-								<td>
-									@foreach($order->orderDetails as $orderDetail)
-										<p>
-											 {{ $orderDetail->medicine->price }}$
-										</p>
-									@endforeach
-								</td>
-								<td>
-									@foreach($order->orderDetails as $orderDetail)
-										<p>
-											*{{ $orderDetail->quantity }}
-										</p>
-									@endforeach
-								</td>
-								<td>
-									{{ $order->created_at->format('Y-m-d'); }}<br>
-									{{ $order->created_at->format('h-i-s'); }}<br>
-								</td>
-							</tr>
-							@if($loop->last)
-								<tr>
-									<td colspan="5"><hr></td>
-								</tr>
-							@endif
-						@endforeach
-					</tbody>
-				</table>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cashier</th>
+                            <th>Medicine Name</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Date & Time</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($pharmacy->orders->take(5) as $order)
+                        <tr>
+                            <td>
+                                @foreach($order->orderDetails as $orderDetails)
+                                    {{$orderDetails->cashier->user->name}}
+                                    @break
+                                @endforeach
+                            </td>
+                            <td>
+                                @foreach($order->orderDetails as $orderDetails)
+                                    {{$orderDetails->medicine->name}}
+                                    <br>
+                                @endforeach
+                            </td>
+                            <td>
+                                @foreach($order->orderDetails as $orderDetails)
+                                    {{$orderDetails->medicine->price}}
+                                    <br>
+                                @endforeach
+                            </td>
+                            <td>
+                                @foreach($order->orderDetails as $orderDetails)
+                                    *({{$orderDetails->quantity}})
+                                    <br>
+                                @endforeach
+                            </td>
+                            <td>
+                                @foreach($order->orderDetails as $orderDetails)
+                                    {{$orderDetails->created_at}}
+                                    @break
+                                @endforeach
+                            </td>
+                            <td>
+                                @php
+                                    $total = 0;
+                                @endphp
+                
+                                @foreach($order->orderDetails as $orderDetails)
+                                    @php
+                                        $total += $orderDetails->quantity * $orderDetails->medicine->price;
+                                    @endphp
+                                @endforeach
+                
+                                ${{$total}}
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                
 
 
 			</div>

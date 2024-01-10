@@ -27,4 +27,9 @@ class order extends Model
     {
         return $this->hasMany(order_detalis::class,'order_id','id');
     }
+
+    public function cashier()
+    {
+        return $this->belongsTo(Cashier::class,'cashier_id','id');
+    }
 }

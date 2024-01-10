@@ -17,4 +17,13 @@ class cashier extends Model
     ];
 
     protected $hidden="";
+
+    public function user()
+    {
+        return $this->belongsTo(user::class,'user_id','id');
+    }
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'cashier_id', 'id');
+    }
 }
