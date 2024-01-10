@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>Medicines</title>
   <link rel="stylesheet" href="{{asset('addCashier/addCashier.css')}}">
 </head>
@@ -16,9 +17,9 @@
 		<!-- NAVBAR -->
 	<nav>
 		<i class='bx bx-menu' ></i>
-		<form action="#">
+		<form action="{{route('searchMethod')}}" method="get">
 			<div class="form-input">
-				<input type="search" placeholder="Search...">
+				<input type="search" placeholder="Search..." name="search">
 				<button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
 			</div>
 		</form>
@@ -107,6 +108,16 @@
 	  });
 	  </script>
 	@endif
+
+	@if(session('msgEmpty'))
+	<script>
+		Swal.fire({
+		title: "No Medicine With This Name",
+		icon: "warning",
+		timer: 2500,
+	  });
+	  </script>
+	@endif
     <!-- MAIN -->
     <main>
         <div class="head-title">
@@ -126,7 +137,6 @@
 			@endif
         </div>
 
-
         <div class="table-data">
             <div class="order">
                 <div class="head">
@@ -143,7 +153,8 @@
                         </tr>
                     </thead>
                     <tbody>
-						@foreach($pharmacy->medicines as $medicine)
+						<!--display either search method or defult-->
+						@foreach ((isset($filteredData) && count($filteredData) > 0) ? $filteredData : $pharmacy->medicines as $medicine)
 							<tr>
 								<td>
 									{{$medicine->name}}

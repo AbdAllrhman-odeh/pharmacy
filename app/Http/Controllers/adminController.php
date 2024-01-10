@@ -134,6 +134,7 @@ class adminController extends Controller
         return $pharmacy_id;
     }
 
+    //function to add medicine
     public function addMedicine(Request $request)
     {
         $phy_id=$this->getPhyId();
@@ -155,6 +156,40 @@ class adminController extends Controller
     public function myStorePage()
     {
         return view('admin.myStore');
+    }
+
+    public function searchMethod(Request $request)
+    {
+        $pharmacy_id=$this->getPhyId();
+        $pharmacy = Pharmacy::with('medicines')
+        ->where('id', '=', $pharmacy_id)
+        ->first();
+
+        $searchQuery=$request->search;
+        $phy_id=$this->getPhyId();
+    
+        if($searchQuery!=' ')
+        {
+            $filteredData = medicine::where('pharmacy_id', '=', $phy_id)
+            ->where(function ($query) use ($searchQuery) {
+                $query->where('name', 'like', '%' . $searchQuery . '%')
+                ->orWhere('chemical_Name', 'like', '%' . $searchQuery . '%')
+                ->orWhere('type', 'like', '%' . $searchQuery . '%')
+                ->orWhere('exp_date', 'like', '%' . $searchQuery . '%')
+                ->orWhere('mfg_date', 'like', '%' . $searchQuery . '%')
+                ->orWhere('quantity', 'like', '%' . $searchQuery . '%');
+            })
+            ->get();
+            if($filteredData->isEmpty())
+            return redirect()->to('admin/addDrug')->with('msgEmpty','empty set');
+
+            return view('admin.addDrug',compact('pharmacy','filteredData'));
+        }
+        else
+        {
+            return view('admin.addDrug', compact('pharmacy'));
+        }
+
     }
 
 }

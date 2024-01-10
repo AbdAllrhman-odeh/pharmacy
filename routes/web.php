@@ -58,6 +58,7 @@ Route::middleware(['adminMiddleware'])->group(function () {
         Route::post('/deleteMedicine/{id}',[adminController::class,'deleteMedicine'])->name('deleteMedicine');
         Route::post('/addMedicine',[adminController::class,'addMedicine'])->name('addMedicine');
         Route::get('/myStore',[adminController::class,'myStorePage']);
+        Route::get('/searchMethod',[adminController::class,'searchMethod'])->name('searchMethod');
     });
 });
 
