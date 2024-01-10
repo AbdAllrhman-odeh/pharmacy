@@ -39,19 +39,13 @@
 			<li class="@yield('item4')">
 				<a href="addDrug">
                     <i class="bx fa fa-plus" aria-hidden="true"></i>
-					<span class="text">Add Medicines</span>
+					<span class="text">Medicines</span>
 				</a>
 			</li>
             <li class="@yield('item5')">
 				<a href="healthInsurance">
                     <i class="fa-solid fa-hospital-user hi"></i>
 					<span class="text">Health Insurance</span>
-				</a>
-			</li>
-            <li class="@yield('item6')">
-				<a href="#">
-                    <i class="fa fa-exchange hi" aria-hidden="true"></i>
-					<span class="text">Edit Alternative Medicines</span>
 				</a>
 			</li>
 			<li class="@yield('item7')">
@@ -61,19 +55,6 @@
 				</a>
 			</li>
             <hr>
-			<!--edit here-->
-            <li class="">
-				<a href="#">
-					<i class='bx bxs-group'></i>
-					<span class="text">user1</span>
-				</a>
-			</li>
-            <li class=""">
-				<a href="#">
-					<i class='bx bxs-group'></i>
-					<span class="text">user2</span>
-				</a>
-			</li>
         </ul>
 
 		<!--side menue-->

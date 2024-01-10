@@ -1,29 +1,47 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Event listener to open the modal when the button is clicked
+document.addEventListener('DOMContentLoaded', function () {
+    // Event listener to open the first modal when the button is clicked
     document.getElementById('openModalButton').addEventListener('click', openModal);
-    
-    // var hasErrors = document.currentScript.getAttribute('data-errors') === 'true';
-    
+    // document.getElementById('openModalButton2').addEventListener('click', openModal2);
+
+    // Function to open the first modal
     function openModal() {
-        // Display the modal only if there are no errors
-            document.getElementById('myModal').style.display = 'block';
+        document.getElementById('myModal').style.display = 'block';
+    }
+    // function openModal2() {
+    //     document.getElementById('myModal2').style.display = 'block';
+    // }
+    var buttons = document.getElementsByClassName('openModalButton2');
+
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].addEventListener('click', function () {
+            // You need to pass the specific cashierId here
+            openModal2(this.getAttribute('data-cashier-id'));
+        });
     }
 
-    // Function to close the modal
-    function closeModal() {
-        document.getElementById('myModal').style.display = 'none';
+    // Function to open the second modal
+    function openModal2(cashierId) {
+        document.getElementById('myModal2_' + cashierId).style.display = 'block';
     }
 
-    // Event listener to open the modal when the button is clicked
-    document.getElementById('openModalButton').addEventListener('click', openModal);
-
-    // Function to open the modal
-    function openModal() {
-        $('#myModal').show();
+    // Function to close the second modal
+    function closeModal2(cashierId) {
+        document.getElementById('myModal2_' + cashierId).style.display = 'none';
     }
+
 });
 
-// Function to close the modal
+// Close the first and the second modal
 function closeModal() {
     $('#myModal').hide();
 }
+function closeModal2(cashierId) {
+    document.getElementById('myModal2_' + cashierId).style.display = 'none';
+}   
+
+function openModal2(cashierId) {
+    document.getElementById('myModal2_' + cashierId).style.display = 'block';
+}
+
+
+

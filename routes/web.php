@@ -4,6 +4,7 @@ use App\Http\Controllers\adminController;
 use App\Http\Controllers\cashierController;
 use App\Http\Controllers\homeController;
 use App\Http\Controllers\superAdminController;
+use App\Models\admin;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -52,6 +53,11 @@ Route::middleware(['adminMiddleware'])->group(function () {
         Route::get('/dashboard', [adminController::class, 'dashboardPage']);
         Route::get('/addCashier',[adminController::class, 'addCashierPage']);
         Route::post('/addCashierFunction',[adminController::class,'addCashier'])->name('addCashierFunction');
+        Route::get('/addDrug',[adminController::class,'addDrugPage']);
+        Route::post('/updateMedicine/{id}',[adminController::class,'updateMedicine'])->name('updateMedicine');
+        Route::post('/deleteMedicine/{id}',[adminController::class,'deleteMedicine'])->name('deleteMedicine');
+        Route::post('/addMedicine',[adminController::class,'addMedicine'])->name('addMedicine');
+        Route::get('/myStore',[adminController::class,'myStorePage']);
     });
 });
 

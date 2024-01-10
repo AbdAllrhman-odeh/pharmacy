@@ -32,7 +32,7 @@
 	<!-- NAVBAR -->
 
 
-    <!-- Modal Container -->
+    <!-- Modal Container for the add cashier -->
     <div id="myModal" class="modal" style="{{ $errors->any() ? 'display: block;' : 'display: none;' }}">
         <div class="modal-content">
             <!-- Close button for the modal -->
@@ -100,7 +100,6 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Joined At</th>
-                            <th>Edit</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -119,25 +118,8 @@
                                     @endphp
                                     {{$createdAt}}
                                 </td>
-                                <td>
-                                    <span class="status pending"><a href="" style="color:white">edit</a></span></td>
-                                </td>
                             </tr>
                         @endforeach
-                        {{-- <tr>
-                            <td>
-                                <p></p>
-                            </td>
-                            <td>
-                                <p>
-                                    Email@email.com
-                                </p>
-                            </td>
-                            <td>
-                                2016/06/06
-                            </td>
-                            <td><span class="status pending">Completed</span></td>
-                        </tr> --}}
                     </tbody>
                 </table>
             </div>

@@ -9,7 +9,7 @@ width:450px;
 max-width: 100%;
 box-sizing: border-box;
 padding: 25px;
-margin: 40px auto;
+margin: 20px auto;
 position: relative;
 z-index: 1;
 border-top: 5px solid #3C91E6;;
@@ -45,8 +45,10 @@ background: #fafafa;
 
 .input-field input[type=text],
 .input-field input[type=email],
+.input-field input[type=number],
+.input-field input[type=date],
 .input-field input[type=password] {
-width: 100%;
+width: 70%;
 padding: 8px 10px;
 height: 35px;
 border: 1px solid #cccccc;
@@ -56,7 +58,9 @@ outline: none;
 
 .input-field input[type=text]:focus,
 .input-field input[type=email]:focus,
-.input-field input[type=password]:focus {
+.input-field input[type=number]:focus,
+.input-field input[type=number]:focus,
+.input-field input[type=date]:focus {
 box-shadow: 0 0 2px 1px #3C91E6;
 border: 1px solid #3C91E6;;
 background: #fafafa;
@@ -121,7 +125,7 @@ background: #3C91E6;;
 
 .modal-content {
     position: absolute;
-    top: 50%;
+    top: 57%;
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: white;
@@ -129,6 +133,7 @@ background: #3C91E6;;
     padding-bottom:4px;
     border-radius: 5px;
 }
+
 
 /* Close button styles */
 .close {
@@ -138,3 +143,26 @@ background: #3C91E6;;
     font-size: 20px;
     cursor: pointer;
 }
+button:hover {
+    cursor: pointer;
+  }
+  .cancel{
+    background: #DB504A;
+    height: 35px;
+    line-height: 35px;
+    width: 100%;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    color: #fff;
+    font-size: 1.1em;
+    margin-bottom: 10px;
+  }
+  .g{
+    background-color: #4CAF50;
+  }
+  .input-field label{
+    width: 100px;
+    display: inline-block;
+  }
+

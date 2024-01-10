@@ -13,16 +13,21 @@ class medicine extends Model
 
     protected $fillable=[
         'name',
-        'chemical_name',
+        'chemical_Name',
         'does',
         'type',
         'quantity',
         'price',
         'exp_date',
-        'mfg-date',
-        'pharamcy_id',
-        'company_name',
+        'mfg_date',
+        'pharmacy_id',
+        'compnay_name',
     ];
 
     protected $hidden="";
+
+    public function pharmacy()
+    {
+        return $this->belongsTo(pharmacy::class,'pharmacy_id','id');
+    }
 }

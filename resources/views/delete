@@ -1,0 +1,63 @@
+                                <!-- Modal Container for the editing cashiers -->
+                                <div class="modal" id="myModal2_{{$cashier->user->id}}" style="display: none">
+                                    <div class="modal-content">
+                                        <!-- Close button for the modal -->
+                                        <span class="close" onclick="closeModal2({{$cashier->user->id}})">&times;</span>
+                                        
+                                        <!-- Form content -->
+                                        <div class="container">
+                                            <h2>Show Cashier Information</h2>
+                                            <form>
+                                            <div class="input-field">
+                                                <input type="text" value="{{$cashier->user->name}}" disabled/>
+                                            </div>
+                                            <div class="input-field">
+                                                <input type="email" value="{{$cashier->user->email}}" disabled />
+                                            </div>
+                                            <div class="input-field">
+                                                <input type="email" value="{{$cashier->user->email}}" disabled />
+                                            </div>
+                                            <div class="input-field">
+                                                <input type="text" placeholder="You Can Generate A New Password" name="new_password" class="newPassword"/>
+                                            </div>
+                                            <button class="cancel" onclick="closeModal2({{$cashier->user->id}})">Cancel</button>
+                                            <br>
+                                            <button class="cancel g" onclick="generateNewPassword()">Generate New Password</button>
+                                            <br>
+                                            <input class="button" type="submit" value="save">
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                //model 2
+document.addEventListener('DOMContentLoaded', function () {
+    var buttons = document.getElementsByClassName('openModalButton2');
+
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].addEventListener('click', function () {
+            // You need to pass the specific cashierId here
+            openModal2(this.getAttribute('data-cashier-id'));
+        });
+    }
+
+    // Function to open the second modal
+    function openModal2(cashierId) {
+        document.getElementById('myModal2_' + cashierId).style.display = 'block';
+    }
+
+    // Function to close the second modal
+    function closeModal2(cashierId) {
+        document.getElementById('myModal2_' + cashierId).style.display = 'none';
+    }
+};
+
+    //
+    function closeModal2(cashierId) {
+        document.getElementById('myModal2_' + cashierId).style.display = 'none';
+    }   
+    
+    function openModal2(cashierId) {
+        document.getElementById('myModal2_' + cashierId).style.display = 'block';
+    }
+    
