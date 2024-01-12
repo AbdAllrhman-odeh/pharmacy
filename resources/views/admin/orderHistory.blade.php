@@ -3,7 +3,13 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Admin</title>
+	<title>Orders History</title>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<style>
+		summary::marker{
+			color:var(--blue);
+		}
+	</style>
 </head>
 <body>
 
@@ -80,10 +86,9 @@
 			<!-- NAVBAR -->
 			<nav>
 				<i class='bx bx-menu' ></i>
-				<a href="#" class="nav-link">Categories</a>
-				<form action="#">
+				<form action="{{route('searchMethodForOrder')}}" method="GET">
 					<div class="form-input">
-						<input type="search" placeholder="Search...">
+						<input type="search" placeholder="Search By Order Id OR Medicine Name	" name="search">
 						<button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
 					</div>
 				</form>
@@ -93,28 +98,35 @@
 				<!-- mode -->
 	
 				<a href="#" class="profile">
-					<img src="img/admin.png">
+					<img src="{{asset('img/admin.png')}}">
 				</a>
 			</nav>
+			@if(session('msgEmpty'))
+			<script>
+				Swal.fire({
+				title: "No Orders With This Id",
+				icon: "warning",
+				timer: 2500,
+			  });
+			  </script>
+			@endif
+		
 			<!-- NAVBAR -->
 	
 			<!-- MAIN -->
 			<main>
 				<div class="head-title">
 					<div class="left">
-						<h1>Order History</h1>
+						<h1>Orders History</h1>
 						<ul class="breadcrumb">
 							<li>
-								<a href="#">System</a>
+								<a href="#">{{$pharmacy->name}}</a>
 							</li>
 							<li><i class='bx bx-chevron-right' ></i></li>
 							<li>
-								<a class="active" href="#">Name</a>
+								<a href="">{{$pharmacy->location}}</a>
 							</li>
 						</ul>
-					</div>
-					<div class="right">
-						<span class="status completed"><a href="" style="color:white; font-size:15px;">Edit Information</a></span>
 					</div>
 				</div>
 	
@@ -123,53 +135,153 @@
 					<div class="order">
 						<div class="head">
 							<h3>Orders history</h3>
-							<i class='bx bx-search' ></i>
-							<i class='bx bx-filter' ></i>
 						</div>
 						<table>
 							<thead>
 								<tr>
-									<th>User</th>
-									<th>Date Order</th>
-									<th>Status</th>
+									<th>Order Id</th>
+									<th>Cashier Name</th>
+									<th>Medicine Id</th>
+									<th>Medicine Details</th>
+									<th>Quantity</th>
+									<th>Total</th>
 								</tr>
 							</thead>
-							<tbody>
+							<tbody style="">
+								@if(! (isset($filteredData) && count($filteredData) > 0))
+								@foreach($pharmacy->orders as $order)
+								{{-- @foreach ((isset($filteredData) && count($filteredData) > 0) ? $filteredData->orders : $pharmacy->orders as $order) --}}
 								<tr>
 									<td>
-										<p>John Doe</p>
+										@foreach($order->orderDetails as $orderDetails)
+                                    		<b>{{$orderDetails->id}}</b>
+                                    		@break
+                                		@endforeach
 									</td>
-									<td>01-10-2021</td>
-									<td><span class="status completed">Completed</span></td>
-								</tr>
-								<tr>
 									<td>
-										<p>John Doe</p>
+										@foreach($order->orderDetails as $orderDetails)
+                                    		{{$orderDetails->cashier->user->name}}
+                                    		@break
+                                		@endforeach
 									</td>
-									<td>01-10-2021</td>
-									<td><span class="status pending">Pending</span></td>
-								</tr>
-								<tr>
 									<td>
-										<p>hello Doe</p>
+										@foreach($order->orderDetails as $orderDetails)
+											<b>{{$orderDetails->medicine->id}}</b> <br>
+										@endforeach
 									</td>
-									<td>01-10-2021</td>
-									<td><span class="status process">Process</span></td>
-								</tr>
-								<tr>
 									<td>
-										<p>John Doe</p>
+										@foreach($order->orderDetails as $orderDetails)
+											{{$orderDetails->medicine->name}}
+											@php
+												if($orderDetails->medicine->type == 'tablet') {
+													echo(' / '.$orderDetails->medicine->does.' MG');
+												}
+											@endphp
+											
+											<details>
+												<summary>
+													More
+												</summary>
+												<p>
+													Exp-date:{{$orderDetails->medicine->exp_date}}
+												</p>
+												<p>
+													MFG-date:{{$orderDetails->medicine->mfg_date}}
+												</p>
+											</details>
+									  @endforeach
 									</td>
-									<td>01-10-2021</td>
-									<td><span class="status pending">Pending</span></td>
-								</tr>
-								<tr>
 									<td>
-										<p>John Doe</p>
+										@foreach($order->orderDetails as $orderDetails)
+											*({{$orderDetails->quantity}})
+											<br>
+										@endforeach
 									</td>
-									<td>01-10-2021</td>
-									<td><span class="status completed">Completed</span></td>
+									<td>
+										@php
+											$total = 0;
+										@endphp
+						
+										@foreach($order->orderDetails as $orderDetails)
+											@php
+												$total += $orderDetails->quantity * $orderDetails->medicine->price;
+											@endphp
+										@endforeach
+						
+										${{$total}}
+									</td>
+									{{-- <td>
+										<details>
+											<summary>Click to view more details</summary>
+											<p>This is the additional content that will be revealed when the user clicks on the "Click to view more details" link.</p>
+										</details>
+									</td> --}}
 								</tr>
+								@endforeach
+								@else
+									@foreach($filteredData as $order)
+									<tr>
+										<td>
+											<b>{{$order->id}}</b>
+										</td>
+										<td>
+											@foreach($order->orderDetails as $orderDetails)
+												{{$orderDetails->cashier->user->name}}
+												@break
+											@endforeach
+										</td>
+										<td>
+											@foreach($order->orderDetails as $orderDetails)
+												<b>{{$orderDetails->medicine->id}}</b>
+												<br>
+											@endforeach
+										</td>
+										<td>
+											
+										@foreach($order->orderDetails as $orderDetails)
+											{{$orderDetails->medicine->name}}
+											@php
+												if($orderDetails->medicine->type == 'tablet') {
+													echo(' / '.$orderDetails->medicine->does.' MG');
+												}
+											@endphp
+											
+											<details>
+												<summary>
+													More
+												</summary>
+												<p>
+													Exp-date:{{$orderDetails->medicine->exp_date}}
+												</p>
+												<p>
+													MFG-date:{{$orderDetails->medicine->mfg_date}}
+												</p>
+											</details>
+								  		@endforeach
+										</td>
+										<td>
+											@foreach($order->orderDetails as $orderDetails)
+											*({{$orderDetails->quantity}})
+											<br>
+											@endforeach
+										</td>
+										<td>
+											@php
+												$total = 0;
+											@endphp
+							
+											@foreach($order->orderDetails as $orderDetails)
+												@php
+													$total += $orderDetails->quantity * $orderDetails->medicine->price;
+												@endphp
+											@endforeach
+							
+											${{$total}}
+											</td>
+									</tr>
+									@endforeach
+								@endif
+								
 							</tbody>
 						</table>
 					</div>

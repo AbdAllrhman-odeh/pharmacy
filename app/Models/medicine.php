@@ -30,4 +30,9 @@ class medicine extends Model
     {
         return $this->belongsTo(pharmacy::class,'pharmacy_id','id');
     }
+    
+    public function orderDetails()
+    {
+        return $this->hasMany(order_detalis::class,'medicine_id','id');
+    }
 }

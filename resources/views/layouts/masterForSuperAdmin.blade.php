@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="{{asset('style.css')}}">
     <!-- JS CODE :/-->
     <script src="{{asset('script.js')}}"></script>
+    <title>@yield('title')</title>
+
 
 </head>
 <body>
@@ -15,7 +17,7 @@
 	<section id="sidebar">
 		<a href="#" class="brand">
 			<i class='bx bxs-smile'></i>
-			<span class="text">Admin</span>
+			<span class="text">Super Admin</span>
 		</a>
 		<ul class="side-menu top">
 			<li class="@yield('item1')">
@@ -24,28 +26,10 @@
 					<span class="text">Dashboard</span>
 				</a>
 			</li>
-			<li class="@yield('item3')">
-				<a href="orderHistory">
-					<i class='bx bxs-doughnut-chart' ></i>
-					<span class="text">Orders History</span>
-				</a>
-			</li>
-			<li class="@yield('item4')">
-				<a href="addDrug"><i class=""></i>
-                    <i class="bx fa fa-plus" aria-hidden="true"></i>
-					<span class="text">Medicines</span>
-				</a>
-			</li>
-            <li class="@yield('item5')">
-				<a href="healthInsurance">
-                    <i class="fa-solid fa-hospital-user hi"></i>
-					<span class="text">Health Insurance</span>
-				</a>
-			</li>
-			<li class="@yield('item7')">
+			<li class="@yield('item2')">
 				<a href="addCashier">
 					<i class='fas fa-user-plus hi'></i>
-					<span class="text">Add Cashier</span>
+					<span class="text">Admins</span>
 				</a>
 			</li>
             <hr>
@@ -53,7 +37,7 @@
 
 		<!--side menue-->
 		<ul class="side-menu">
-			<li class="@yield('item8')"> 
+			<li class="@yield('item3')"> 
 				<a href="settings">
 					<i class='bx bxs-cog' ></i>
 					<span class="text">Settings</span>
@@ -69,6 +53,22 @@
     </section>
 	
 	<section id="content">
+        <!-- NAVBAR -->
+        <nav>
+            <i class='bx bx-menu' ></i>
+            <form action="@yield('action')" method="@yield('method')">
+                @yield('form')
+            </form>
+            <!-- mode -->
+            <input type="checkbox" id="switch-mode" hidden>
+            <label for="switch-mode" class="switch-mode"></label>
+            <!-- mode -->
+
+            <a href="#" class="profile">
+                <img src="{{asset('img/admin.png')}}">
+            </a>
+        </nav>
+        <!-- NAVBAR -->
 		@yield('content')
 	</section>
 </body>

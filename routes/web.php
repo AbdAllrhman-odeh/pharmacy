@@ -5,6 +5,7 @@ use App\Http\Controllers\cashierController;
 use App\Http\Controllers\homeController;
 use App\Http\Controllers\superAdminController;
 use App\Models\admin;
+use App\Models\superAdminModel;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 
 //welcome page
 Route::get('/', function () {
+    // return redirect()->to('signin');
     return view('welcome');
 });
 
@@ -42,6 +44,9 @@ Route::middleware(['superAdminMiddleware'])->group(function () {
     //superAdmin pages
     Route::group(['prefix' => 'superAdmin'], function () {
         Route::get('/dashboard', [superAdminController::class, 'dashboardPage']);
+        
+        Route::post('/pharamcyDetalis',[superAdminController::class,'pharmacyDetails'])->name('pharmacyDetails');
+
     });
 });
 
@@ -51,14 +56,23 @@ Route::middleware(['adminMiddleware'])->group(function () {
     //admin pages
     Route::group(['prefix' => 'admin'], function () {
         Route::get('/dashboard', [adminController::class, 'dashboardPage']);
+
         Route::get('/addCashier',[adminController::class, 'addCashierPage']);
         Route::post('/addCashierFunction',[adminController::class,'addCashier'])->name('addCashierFunction');
+       
         Route::get('/addDrug',[adminController::class,'addDrugPage']);
         Route::post('/updateMedicine/{id}',[adminController::class,'updateMedicine'])->name('updateMedicine');
         Route::post('/deleteMedicine/{id}',[adminController::class,'deleteMedicine'])->name('deleteMedicine');
         Route::post('/addMedicine',[adminController::class,'addMedicine'])->name('addMedicine');
+       
         Route::get('/myStore',[adminController::class,'myStorePage']);
         Route::get('/searchMethod',[adminController::class,'searchMethod'])->name('searchMethod');
+       
+        Route::get('/orderHistory',[adminController::class,'orderHistoryPage']);
+        Route::get('/searchMethodForOrder',[adminController::class,'searchMethodForOrder'])->name('searchMethodForOrder');
+
+        Route::get('/settings',[adminController::class,'settingsPage']);
+        Route::post('/updateInfo',[adminController::class,'updateFunction'])->name('updateFunction');
     });
 });
 

@@ -27,8 +27,8 @@ class homeController extends Controller
     public function login(signInRequest $request)
     {
         $rules = [
-            'email' => 'required|email|min:5|max:20',
-            'password' => 'required|string|min:5|max:15',
+            'email' => 'required|email|min:5|max:30',
+            'password' => 'required|string|min:5|max:20',
         ];
     
         $credentials = $request->validate($rules);

@@ -48,5 +48,9 @@ class pharmacy extends Model
         {
             return $this->hasMany(medicine::class,'pharmacy_id','id');
         }
+
+        public function superAdmin() {
+            return $this->belongsTo(superAdminModel::class, 'super_admin_id', 'id');
+        }
     
 }

@@ -12,7 +12,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use PhpParser\Node\Expr\FuncCall;
+use Illuminate\Validation\Rule;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class adminController extends Controller
@@ -190,6 +190,110 @@ class adminController extends Controller
             return view('admin.addDrug', compact('pharmacy'));
         }
 
+    }
+
+    public function orderHistoryPage()
+    {
+        $phy_id=$this->getPhyId();
+
+        //get all pharmacy Info with the orders and orderDetails[with the medicine and the cashier information]
+        $pharmacy = Pharmacy::with([ 'orders.orderDetails.medicine','orders.orderDetails.cashier.user'])
+        ->where('id', '=', $phy_id)
+        ->first();
+        
+        return view('admin.orderHistory',compact('pharmacy'));
+    }
+
+    public function searchMethodForOrder(Request $request)
+    {
+        $phy_id=$this->getPhyId();
+
+        //get all pharmacy Info with the orders and orderDetails[with the medicine and the cashier information]
+        $pharmacy = Pharmacy::with([ 'orders.orderDetails.medicine','orders.orderDetails.cashier.user'])
+        ->where('id', '=', $phy_id)
+        ->first();
+        
+        $searchQuery=$request->search;
+        $phy_id=$this->getPhyId();
+    
+        if($searchQuery!=' ')
+        {
+            $filteredData = order::with(['orderDetails.medicine','orderDetails.cashier.user'])->where('pharmacy_id', '=', $phy_id)
+            ->where(function ($query) use ($searchQuery) {
+                $query->where('id', 'like', '%' . $searchQuery . '%');
+            })
+            ->get();
+
+
+            // $filteredDataMedicine = Medicine::with(['orderDetails.cashier.user'])->where('pharmacy_id', '=', $phy_id)
+            // ->where(function ($query) use ($searchQuery) {
+            //     $query->where('name', 'like', '%' . $searchQuery . '%');
+            // })
+            // ->get();
+
+            if($filteredData->isEmpty())// && $filteredDataMedicine->isEmpty())
+            return redirect()->to('admin/orderHistory')->with('msgEmpty','empty set');
+
+            else if(!($filteredData->isEmpty()))
+            return view('admin.orderHistory',compact('pharmacy','filteredData'));
+
+            // else if( !($filteredDataMedicine->isEmpty()) )dd($filteredDataMedicine);
+            // return view('admin.orderHistory',compact('pharmacy','filteredDataMedicine'));
+
+            
+            return view('admin.orderHistory', compact('pharmacy'));
+        }
+        else
+        {
+            return view('admin.orderHistory', compact('pharmacy'));
+        }
+        return view('admin.orderHistory', compact('pharmacy'));   
+    }
+
+    public function settingsPage()
+    {
+        $user_id = Auth::id();
+        $admin=admin::with('user')->where('id','=',$user_id)->first();
+        
+       return view('admin.settings',compact('admin'));
+    }
+
+    public function updateFunction(Request $request)
+    {
+        $user_id = Auth::id();
+        $phy_id=$this->getPhyId();
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                Rule::unique('users')->ignore($user_id), // Ignore the current user id
+            ],
+            'old_password' => 'required',
+            'newPassword' => 'nullable|min:8|confirmed',
+        ]);
+
+        $user = User::find($user_id);
+
+        if (!Hash::check($request->old_password, $user->password))
+        {
+            return redirect()->back()->with('error', 'Old password is incorrect.');
+        }
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+
+        // Check if a new password is provided
+        if ($request->newPassword)
+        {
+            $user->password = bcrypt($request->newPassword);
+        }
+
+        $user->save();
+
+        return redirect()->back()->with('success', 'User information updated successfully.');
     }
 
 }

@@ -22,8 +22,8 @@ class signInRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email'=>'required|email|min:5|max:20',
-            'password'=>'required|string|min:5|max:15',
+            'email'=>'required|email|min:5|max:30',
+            'password'=>'required|string|min:5|max:20',
         ];
     }
 
@@ -33,11 +33,11 @@ class signInRequest extends FormRequest
             'email.required' => 'The email field is required.',
             'email.email' => 'Please enter a valid email address.',
             'email.min' => 'The email must be at least 5 characters.',
-            'email.max' => 'The email may not be greater than 20 characters.',
+            'email.max' => 'The email may not be greater than 30 characters.',
             'password.required' => 'The password field is required.',
             'password.string' => 'Please enter a valid password.',
             'password.min' => 'The password must be at least 5 characters.',
-            'password.max' => 'The password may not be greater than 15 characters.',
+            'password.max' => 'The password may not be greater than 20 characters.',
         ];
     }
 }
