@@ -53,7 +53,7 @@
             <div class="item">
                 <img src="{{asset('img/pharmacy.png')}}" alt=""><br>
                 @foreach ($superAdmin->pharmacies as $pharmacy)
-                <form action="{{route('pharmacyDetails')}}" method="POST">
+                <form action="{{route('pharmacyDetails')}}" method="get">
                     @csrf
                     <input type="hidden" name="phy_id" value="{{ $pharmacy->id }}">
                     <button>{{ $pharmacy->name }} - {{ $pharmacy->location }}</button>

@@ -81,8 +81,7 @@
     </style>
 </head>
 <body>
-    @extends('layouts.master')
-	@section('item8')active @endsection
+    @extends('layouts.masterForCashier')
 
     @section('content')
     <nav>
@@ -121,15 +120,15 @@
     <div class="container">
         <div class="form">
             <h2 style="text-align: center; color:">Update Your Information</h2>
-            <form action="{{route('updateFunction')}}" method="POST">
+            <form action="{{route('updateInfo')}}" method="POST">
                 @csrf
                 <div class="input">
                     <label for="name">Your Name:</label>
-                    <input type="text" value="{{$admin->name}}" name="name">
+                    <input type="text" value="{{$cashier->name}}" name="name">
                 </div>
                 <div class="input">
                     <label for="email">Your Email:</label>
-                    <input type="email" value="{{$admin->email}}" name="email">
+                    <input type="email" value="{{$cashier->email}}" name="email">
                 </div>
                 <div class="input">
                     <label for="old_password">

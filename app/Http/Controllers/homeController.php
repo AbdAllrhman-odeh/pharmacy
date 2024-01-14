@@ -35,6 +35,7 @@ class homeController extends Controller
     
         if (Auth::attempt($credentials)) {
             $role = Auth()->user()->role;
+            if($role=='cashier') return redirect()->to($role.'/medicines');
             return redirect()->to($role.'/dashboard');
         }
     

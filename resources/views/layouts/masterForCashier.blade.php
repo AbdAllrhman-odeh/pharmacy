@@ -8,14 +8,6 @@
     <link rel="stylesheet" href="{{asset('style.css')}}">
     <!-- JS CODE :/-->
     <script src="{{asset('script.js')}}"></script>
-    <title>@yield('title')</title>
-	<!-- SweetAlert2 CSS -->
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
-
-	<!-- SweetAlert2 JS -->
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
-
 
 </head>
 <body>
@@ -23,27 +15,32 @@
 	<section id="sidebar">
 		<a href="#" class="brand">
 			<i class='bx bxs-smile'></i>
-			<span class="text">Super Admin</span>
+			<span class="text">Cash</span>
 		</a>
 		<ul class="side-menu top">
-			<li class="@yield('item1')">
-				<a href="dashboard" >
-					<i class='bx bxs-dashboard' ></i>
-					<span class="text">Dashboard</span>
+            <li class="@yield('item1')">
+				<a href="medicines"><i class=""></i>
+                    <i class="bx fa fa-plus" aria-hidden="true"></i>
+					<span class="text">Medicines</span>
 				</a>
 			</li>
-			<li class="@yield('item2')">
-				<a href="admins">
-					<i class='fas fa-user-plus hi'></i>
-					<span class="text">Admins</span>
+            <li class="@yield('item2')">
+				<a href="sellMedicines"><i class=""></i>
+                    <i class="fa fa-shopping-basket" style="margin:11px;"></i>
+					<span class="text">Sell Medicines</span>
+				</a>
+			</li>
+			<li class="@yield('item3')">
+				<a href="orderHistory">
+					<i class='bx bxs-doughnut-chart' ></i>
+					<span class="text">Orders History</span>
 				</a>
 			</li>
             <hr>
         </ul>
-
 		<!--side menue-->
 		<ul class="side-menu">
-			<li class="@yield('item3')"> 
+			<li> 
 				<a href="settings">
 					<i class='bx bxs-cog' ></i>
 					<span class="text">Settings</span>
@@ -59,21 +56,6 @@
     </section>
 	
 	<section id="content">
-        <!-- NAVBAR -->
-        <nav>
-            <i class='bx bx-menu' ></i>
-			<form>
-			</form>
-            <!-- mode -->
-            <input type="checkbox" id="switch-mode" hidden>
-            <label for="switch-mode" class="switch-mode"></label>
-            <!-- mode -->
-
-            <a href="#" class="profile">
-                <img src="{{asset('img/admin.png')}}">
-            </a>
-        </nav>
-        <!-- NAVBAR -->
 		@yield('content')
 	</section>
 </body>

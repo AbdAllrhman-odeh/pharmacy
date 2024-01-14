@@ -81,23 +81,10 @@
     </style>
 </head>
 <body>
-    @extends('layouts.master')
-	@section('item8')active @endsection
+    @extends('layouts.masterForSuperAdmin')
 
     @section('content')
-    <nav>
-        <i class='bx bx-menu' ></i>
-        <form>
-        </form>
-        <!-- mode -->
-        <input type="checkbox" id="switch-mode" hidden>
-        <label for="switch-mode" class="switch-mode"></label>
-        <!-- mode -->
 
-        <a href="#" class="profile">
-            <img src="{{asset('img/admin.png')}}">
-        </a>
-    </nav>
     @if(session('error'))
 	<script>
 		Swal.fire({
@@ -121,20 +108,20 @@
     <div class="container">
         <div class="form">
             <h2 style="text-align: center; color:">Update Your Information</h2>
-            <form action="{{route('updateFunction')}}" method="POST">
+            <form action="{{route('updateFunctionForSuperAdmin')}}" method="POST">
                 @csrf
                 <div class="input">
                     <label for="name">Your Name:</label>
-                    <input type="text" value="{{$admin->name}}" name="name">
+                    <input type="text" value="{{$superAdmin->user->name}}" name="name">
                 </div>
                 <div class="input">
                     <label for="email">Your Email:</label>
-                    <input type="email" value="{{$admin->email}}" name="email">
+                    <input type="email" value="{{$superAdmin->user->email}}" name="email">
                 </div>
                 <div class="input">
                     <label for="old_password">
                         <small style="color:red">* </small>Your Old Password:
-                        <small style="color:red">*This field is required</small>
+                        <p style="color:red">*This field is required</p>
                     </label>
                     <input type="password" value="" name="old_password" required />
                 </div>
@@ -143,7 +130,7 @@
                 <div class="input">
                     <label for="newPassword1">
                         Your New Password:
-                        <small style="color:red">*If you wanna change your password, Those fields are required</small>
+                        <p style="color:red">*If you wanna change your password, Those fields are required</p>
                     </label>
                     <input type="password"  name="newPassword">
                 </div>

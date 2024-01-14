@@ -5,6 +5,7 @@ use App\Http\Controllers\cashierController;
 use App\Http\Controllers\homeController;
 use App\Http\Controllers\superAdminController;
 use App\Models\admin;
+use App\Models\cashier;
 use App\Models\superAdminModel;
 use Illuminate\Support\Facades\Route;
 
@@ -45,8 +46,14 @@ Route::middleware(['superAdminMiddleware'])->group(function () {
     Route::group(['prefix' => 'superAdmin'], function () {
         Route::get('/dashboard', [superAdminController::class, 'dashboardPage']);
         
-        Route::post('/pharamcyDetalis',[superAdminController::class,'pharmacyDetails'])->name('pharmacyDetails');
+        Route::get('/pharamcyDetalis',[superAdminController::class,'pharmacyDetails'])->name('pharmacyDetails');
+        Route::post('/pharmacyInfo',[superAdminController::class,'pharmacyInfo'])->name('pharmacyInfo');
 
+        Route::get('/admins',[superAdminController::class,'adminsPage']);
+        Route::post('/addAdmin',[superAdminController::class,'addAdmin'])->name('addAdmin');
+
+        Route::get('/settings',[superAdminController::class,'settingsPage']);
+        Route::post('/update',[superAdminController::class,'updateFunction'])->name('updateFunctionForSuperAdmin');
     });
 });
 
@@ -81,7 +88,18 @@ Route::middleware(['cashierMiddleware'])->group(function () {
     
     //cashier pages
     Route::group(['prefix'=>'cashier'],function(){
-        Route::get('/dashboard',[cashierController::class,'dashboardPage']);
+        Route::get('/medicines',[cashierController::class,'MedcicinesPage']);
+        Route::get('/searchMethodCashier',[cashierController::class,'searchMethodForCashier'])->name('searchMethodCashier');
+
+        Route::get('/searchMethodCashier_sell',[cashierController::class,'searchMethodCashier_sell'])->name('searchMethodCashier_sell');
+        Route::get('/sellMedicines',[cashierController::class,'sellMedicinesPage']);
+        Route::post('/addToCart',[cashierController::class,'addToCart'])->name('addToCart');
+
+        Route::post('/checkOut',[cashierController::class,'checkOut'])->name('checkOut');
+
+        Route::get('/settings',[cashierController::class,'settingsPage']);
+        Route::post('/updateInfo',[cashierController::class,'updateInfo'])->name('updateInfo');
+
     });
 });
 

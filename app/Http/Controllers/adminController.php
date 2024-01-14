@@ -158,7 +158,7 @@ class adminController extends Controller
         return view('admin.myStore');
     }
 
-    public function searchMethod(Request $request)
+    public function searchMethodForCashier(Request $request)
     {
         $pharmacy_id=$this->getPhyId();
         $pharmacy = Pharmacy::with('medicines')
@@ -225,11 +225,6 @@ class adminController extends Controller
             ->get();
 
 
-            // $filteredDataMedicine = Medicine::with(['orderDetails.cashier.user'])->where('pharmacy_id', '=', $phy_id)
-            // ->where(function ($query) use ($searchQuery) {
-            //     $query->where('name', 'like', '%' . $searchQuery . '%');
-            // })
-            // ->get();
 
             if($filteredData->isEmpty())// && $filteredDataMedicine->isEmpty())
             return redirect()->to('admin/orderHistory')->with('msgEmpty','empty set');
@@ -253,7 +248,7 @@ class adminController extends Controller
     public function settingsPage()
     {
         $user_id = Auth::id();
-        $admin=admin::with('user')->where('id','=',$user_id)->first();
+        $admin=user::where('id','=',$user_id)->first();
         
        return view('admin.settings',compact('admin'));
     }

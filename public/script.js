@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const searchButtonIcon = document.querySelector('#content nav form .form-input button .bx');
     const searchForm = document.querySelector('#content nav form');
     const switchMode = document.getElementById('switch-mode');
-
     var flag=0;
     function toggleSidebar() 
     {
