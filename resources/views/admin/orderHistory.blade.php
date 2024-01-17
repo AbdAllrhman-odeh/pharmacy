@@ -277,7 +277,7 @@
 											@endforeach
 							
 											${{$total}}
-											</td>
+										</td>
 									</tr>
 									@endforeach
 								@endif

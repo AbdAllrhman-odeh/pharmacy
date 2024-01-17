@@ -4,9 +4,6 @@ use App\Http\Controllers\adminController;
 use App\Http\Controllers\cashierController;
 use App\Http\Controllers\homeController;
 use App\Http\Controllers\superAdminController;
-use App\Models\admin;
-use App\Models\cashier;
-use App\Models\superAdminModel;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,13 +20,13 @@ use Illuminate\Support\Facades\Route;
 //welcome page
 Route::get('/', function () {
     // return redirect()->to('signin');
-    return view('welcome');
+    return redirect()->to('/signin');
 });
 
 
 //register
 Route::get('register',function(){
-    return view('register');
+    return redirect()->to('/signin');
 });
 Route::post('/registerFunction',[homeController::class,'create'])->name('create');
 
@@ -93,13 +90,17 @@ Route::middleware(['cashierMiddleware'])->group(function () {
 
         Route::get('/searchMethodCashier_sell',[cashierController::class,'searchMethodCashier_sell'])->name('searchMethodCashier_sell');
         Route::get('/sellMedicines',[cashierController::class,'sellMedicinesPage']);
+        Route::post('/checkOut',[cashierController::class,'checkOut'])->name('checkOut');
         Route::post('/addToCart',[cashierController::class,'addToCart'])->name('addToCart');
 
-        Route::post('/checkOut',[cashierController::class,'checkOut'])->name('checkOut');
+        // Route::post('/checkOut',[cashierController::class,'checkOut'])->name('checkOut');
 
         Route::get('/settings',[cashierController::class,'settingsPage']);
         Route::post('/updateInfo',[cashierController::class,'updateInfo'])->name('updateInfo');
 
+        Route::get('/orderHistory',[cashierController::class,'orderHistoryPage']);
+        // Route::post('/ajax_search',[cashierController::class,'ajax_search'])->name('ajax_search');
+        Route::get('search',[cashierController::class,'liveSearchTable']);
     });
 });
 

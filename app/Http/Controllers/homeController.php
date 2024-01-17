@@ -39,7 +39,7 @@ class homeController extends Controller
             return redirect()->to($role.'/dashboard');
         }
     
-        return redirect()->back()->withErrors(['login' => 'Invalid credentials']);
+        return redirect()->back()->with('error' , 'Invalid credentials');
     }
     }
     

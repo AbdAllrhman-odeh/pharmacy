@@ -114,18 +114,7 @@
 					<p>Total Sales</p>
 				</span>
 			</li>
-			<li>
-				<i class='bx bxs-group' ></i>
-				<span class="text">
-					<h3>name</h3>
-					<p>Will be out of stock</p>
-				</span>
-				<span class="text">
-					<h3>name</h3>
-					<p>Will be out of stock</p>
-				</span>
-				
-			</li>
+
 		</ul>
 
 		<div class="table-data">

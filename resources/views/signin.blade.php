@@ -68,7 +68,11 @@
                                                     <span style="color:red;">*{{$message}}</span>
                                                 @enderror
                                             </div>
-    
+                                            @if(session('error'))
+                                                <div style="color:red">
+                                                    Wrong Email Or Password
+                                                </div>
+                                            @endif
                                             <div class="col-12">
                                                 <button type="submit" class="btn btn-primary px-4 float-end mt-4">login</button>
                                             </div>

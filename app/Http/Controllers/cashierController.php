@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\cart;
 use App\Models\cashier;
 use App\Models\medicine;
+use App\Models\order;
+use App\Models\order_detalis;
 use App\Models\pharmacy;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -100,6 +104,8 @@ class cashierController extends Controller
             ->get();
             if($filteredData->isEmpty())
             return redirect()->to('cashier/sellMedicines')->with('msgEmpty','empty set');
+            
+            $cart=cart::get();
 
             return view('cashier/sellMedicines',compact('filteredData'));
         }
@@ -110,32 +116,6 @@ class cashierController extends Controller
 
     }
 
-    public function addToCart(Request $request)
-    {
-        $medicineQuantities = $request->input('medicine_quantity');
-        //[medicineId]=>'quantity'
-        $arr = [];
-
-        // Put the medicines in the array
-        foreach ($medicineQuantities as $id => $quantity) {
-            if ($quantity > 0) {
-                // Convert values to integers if needed
-                $arr[(int)$id] = (int)$quantity;
-            }
-        }
-        
-        //get the medicines info and send it to the view
-        $medicinesInfo = Medicine::whereIn('id', array_keys($arr))->get();
-
-        
-        return view('cashier/sellMedicines',compact('medicinesInfo'));
-    }
-
-    public function checkOut(Request $request)
-    {
-        $ids=$request->id;
-        dd($ids);
-    }
 
     public function settingsPage()
     {
@@ -183,5 +163,85 @@ class cashierController extends Controller
 
         return redirect()->back()->with('success', 'User information updated successfully.');
     }
+
+
+    public function orderHistoryPage()
+    {
+        $user_id = Auth::id();
+        $phy_id=$this->getPhyId();
+
+        $orders=cashier::with('orders.orderDetails.medicine')
+        ->where('user_id','=',$user_id)
+        ->first();
+
+        return view('cashier.orderHistory',compact('orders'));
+    }
+
+    // public function ajax_search(Request $request)
+    //     {
+    //         if($request->ajax())
+    //         {
+    //             $phy_id = $this->getPhyId();
+    //             $searchByAjax = $request->searchByAjax;
+        
+    //             try {
+    //                 $data = medicine::where('name', 'like', '%' . $searchByAjax . '%')
+    //                     ->where('pharmacy_id', '=', $phy_id)
+    //                     ->get();
+        
+    //                 return view('cashier.ajax_search', ['data' => $data])->render();
+    //             } catch (\Exception $e) {
+    //                 // Log the exception or display the error message
+    //                 dd($e->getMessage());
+    //             }
+    //         }
+    //     }
+
+    public function liveSearchTable(Request $request)
+    {
+        if($request->ajax()){
+            $data=order::where('created_at','like','%'.$request->search.'%')
+            ->orWhere('id','like','%'.$request->search.'%')
+            ->get();
+            $output='';
+            if(count($data)>0)
+            {
+                $output='
+                <table>
+                <thead>
+                    <tr>
+                        <td>
+                            id:
+                        </td>
+                        <td>
+                            name:
+                        </td>
+                        <td>
+                            Quantity:
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>';
+                foreach($data as $row)
+                {
+                    $output.='<tr>
+                        <td>
+                        '.$row->id.'
+                        </td>
+                        <td>
+                        '.$row->created_at.'
+                        </td>
+                    </tr>';
+                }
+                $output.='</tbdoy></table>';
+            }
+            else
+            {
+                $output='no result found';
+            }
+            return $output;
+        }
+    }
+        
 
 }

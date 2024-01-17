@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="{{asset('addCashier/addCashier.css')}}">
 
     <style>
-        input[type='number']
+        .number 
         {
             text-align: center;
             font-size:14px; 
@@ -35,12 +35,15 @@
 		<!-- NAVBAR -->
 	<nav>
 		<i class='bx bx-menu' ></i>
+		<!--search method-->
+		<div class="form-input">
 		<form action="{{route('searchMethodCashier_sell')}}" method="get">
 			<div class="form-input">
 				<input type="search" placeholder="Search..." name="search">
 				<button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
 			</div>
 		</form>
+		</div>
 		<!-- mode -->
 		<input type="checkbox" id="switch-mode" hidden>
 		<label for="switch-mode" class="switch-mode"></label>
@@ -55,7 +58,7 @@
     <!-- MAIN -->
     <main>
         <!--cart table-->
-        <div class="table-data">
+        {{-- <div class="table-data">
             <div class="order">
                 <div class="head">
                     <h3>Cart</h3>
@@ -169,7 +172,16 @@
             </form>
             @endif
             </div>
-        </div> 
+        </div>  --}}
+		@if(session('added'))
+		<script>
+			Swal.fire({
+			title: "order Completed.",
+			icon: "success",
+			timer: 2500,
+		  });
+		  </script>
+		@endif
 
         <!--search result-->
         <div class="table-data">
@@ -178,7 +190,7 @@
                     <h3>Searched Medicines</h3>
                 </div>
             @if(isset($filteredData) && count($filteredData) > 0)
-            <form method="POST" action="{{route('addToCart')}}">
+            <form method="POST" action="{{route('checkOut')}}">
             @csrf
                 <table>
                     <thead>
@@ -261,7 +273,7 @@
 												<label for="price">MFG-date: </label>
 												<input type="date" value="{{$medicine->mfg_date}}" name="new_mfg_date" disabled />
 											</div>
-											<input class="button" type="text" value="Close" onclick="closeModal2({{$medicine->id}})">
+											{{-- <button class="button" type="submit" value="Close" onclick="closeModal2({{$medicine->id}})">close</button> --}}
 											</form>
 										</div>
 									</div>
@@ -276,18 +288,25 @@
 									<button type="button" class="openModalButton2 status g" data-cashier-id="{{$medicine->id}}" onclick="openModal2('{{$medicine->id}}')" style="border:none; font-size:15px;">More Info</button>
 								</td>
                                 <td>
-                                    <input type="number" min="0" max="{{intval($medicine->quantity)}}" value="0" name="medicine_quantity[{{ $medicine->id }}]">                                                                  
+									<form method="POST"	 action="{{route('addToCart')}}">
+										@csrf
+										<input type="hidden" name="med_id" value="{{$medicine->id}}">
+                                    	<input type="number" class="number" min="0" max="{{intval($medicine->quantity)}}" value="0" name="med_quantity">   
+										<input type="submit" value="Add">
+									</form>         
                                 </td>
 							</tr>
 						@endforeach
                     </tbody>
                 </table>
-                <div style="text-align:center; margin:10px;"><input type="submit" value="add" style="width:50%"></div>
+                <div style="text-align:center; margin:10px;">
+					<input type="submit" value="CheckOut" style="width:50%">
+				</div>
             @else You have not searched anything yet.
             </form>
             @endif
             </div>
-        </div> 
+        </div> 	
     </main>
     <!-- MAIN -->
 
@@ -297,7 +316,6 @@
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.min.css">
-    <script src="{{ asset('addCashier/addCashier.js') }}" data-errors="{{ $errors->any() }}"></script>
-
+<script src="{{ asset('addCashier/addCashier.js') }}" data-errors="{{ $errors->any() }}"></script>
 </body>
 </html>

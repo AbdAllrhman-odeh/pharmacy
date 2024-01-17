@@ -209,8 +209,8 @@
 												<label for="price">MFG-date: </label>
 												<input type="date" value="{{$medicine->mfg_date}}" name="new_mfg_date" disabled />
 											</div>
-											<input class="button" type="submit" value="Close" onclick="closeModal2({{$medicine->id}})">
 											</form>
+											<input class="button" type="submit" value="Close" onclick="closeModal2({{$medicine->id}})">
 										</div>
 									</div>
 								</div>

@@ -58,5 +58,7 @@
 	<section id="content">
 		@yield('content')
 	</section>
+<script src="{{asset('jquery-3.7.1.min.js')}}"></script>
+	@yield('script')
 </body>
 </html>
