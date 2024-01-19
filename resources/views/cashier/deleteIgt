@@ -16,7 +16,7 @@
 		<!-- NAVBAR -->
 		<nav>
 			<i class='bx bx-menu' ></i>
-			<form method="GET" action="{{route('searchMethodCashier')}}">
+			<form>
 				<div class="form-input">
 					<input type="search" placeholder="Search By Order Id OR Date" id="search" name="search" onfocus="this.value='' ">
 					<button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
@@ -128,6 +128,7 @@
                 <div class="head">
                     <h3>View Medicines</h3>
                 </div>
+				<div id="search_list">
                 <table>
                     <thead>
                         <tr>
@@ -226,6 +227,7 @@
 						@endforeach
                     </tbody>
                 </table>
+				</div>
             </div>
         </div>
     </main>
@@ -250,13 +252,7 @@
 					type:"GET",
 					data:{'search':query},
 					success:function(data){
-						var tableRow='';
 						$('#search_list').html(data);
-						$.each(res,function(index,value){
-							//content of the table row
-							tableRow='<tr><td></td></tr>';
-							$('#dynamic-table').append(tableRow);
-						});
 					}
 				});
 			});

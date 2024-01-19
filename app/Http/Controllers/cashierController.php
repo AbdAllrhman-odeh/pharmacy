@@ -9,12 +9,12 @@ use App\Models\order;
 use App\Models\order_detalis;
 use App\Models\pharmacy;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+
 
 class cashierController extends Controller
 {   
@@ -39,6 +39,7 @@ class cashierController extends Controller
         ->first();
                 
         return view('cashier/medicines',compact('pharmacy'));
+        // return view('cashier.medicines');
     }
 
     public function searchMethodForCashier(Request $request)
@@ -75,8 +76,136 @@ class cashierController extends Controller
 
     }
 
+    public function getCart()
+    {
+        $pharmacy_id=$this->getPhyId();
+        $user_id = Auth::id();
+        $cashier_id=cashier::where('user_id','=',$user_id)->first();
+        $cashier_id=$cashier_id->id;
+
+
+        $cart=cart::with('medicines')
+        ->where('pharmacy_id','=',$pharmacy_id)
+        ->where('cashier_id','=',$cashier_id)
+        ->get();
+
+        return $cart;
+    }
+
     public function sellMedicinesPage()
     {
+        $cart=$this->getCart();
+
+        return view('cashier.sellMedicines',compact('cart'));
+    }
+
+    public function addToCart(Request $request)
+    {
+        $pharmacy_id=$this->getPhyId();
+        $user_id = Auth::id();
+        $cashier_id=cashier::where('user_id','=',$user_id)->first();
+        $cashier_id=$cashier_id->id;
+        
+        $medicine_id=$request->med_id;
+        $medicine_quantity=$request->med_quantity;
+
+        if($medicine_quantity>0)
+        {
+            cart::create([
+                'pharmacy_id'=>$pharmacy_id,
+                'cashier_id'=>$cashier_id,
+                'medicine_id'=>$medicine_id,
+                'quantity'=>$medicine_quantity,
+            ]);
+
+            $cart=cart::with('medicines')
+                ->where('pharmacy_id','=',$pharmacy_id)
+                ->where('cashier_id','=',$cashier_id)
+                ->get();
+
+            return view('cashier.sellMedicines',compact('cart'));
+        }
+        else
+        {
+            return redirect()->back()->with('qunatityErorr','qunatity less that zero');
+        }
+    }
+
+    public function checkOut()
+    {
+        $cart=$this->getCart();
+
+        $pharmacy_id=$this->getPhyId();
+        $user_id = Auth::id();
+        $cashier_id=cashier::where('user_id','=',$user_id)->first();
+        $cashier_id=$cashier_id->id;
+
+        //[1] Create an order
+        $order=order::create([
+            'cashier_id'=>$cashier_id,
+            'pharmacy_id'=>$pharmacy_id,
+        ]);
+
+        $order_id = $order->id;
+
+        //[2] Create an orderDetails
+        foreach($cart as $cartItem)
+        {
+            $phy_id=$cartItem->pharmacy_id;
+            $med_id=$cartItem->medicine_id;
+            $cash_id=$cartItem->cashier_id;
+            $quantity=$cartItem->quantity;
+
+            if($phy_id==$pharmacy_id && $cashier_id==$cash_id)
+            {
+                order_detalis::create([
+                    'order_id'=>$order_id,
+                    'medicine_id'=>$med_id,
+                    'cashier_id'=>$cash_id,
+                    'quantity'=>$quantity,
+                ]);
+                
+                //[3] Update the medicine quantity
+                    //get the old quantity
+                    $old_quantity=medicine::where('id','=',$med_id)->first();
+                    $old_quantity=$old_quantity->quantity;
+
+                    $new_medicine_quantity=$old_quantity-$quantity;
+
+                    //check if the medicine has become out of stock
+                    if($new_medicine_quantity==0)
+                    {
+                        //delete the medicine from the db
+                    }
+                    //medicine is not out of stock
+                    else
+                    {
+                        medicine::where('id','=',$med_id)->update([
+                            'quantity'=>$new_medicine_quantity
+                        ]);
+                    }
+
+            }
+          
+        }
+
+        //[4] Delete the order from the cart
+        foreach($cart as $cartItem)
+        {
+            $phy_id=$cartItem->pharmacy_id;
+            $med_id=$cartItem->medicine_id;
+            $cash_id=$cartItem->cashier_id;
+            $quantity=$cartItem->quantity;
+
+            if($phy_id==$pharmacy_id && $cashier_id==$cash_id)
+            {
+                cart::where('pharmacy_id','=',$pharmacy_id)
+                    ->where('cashier_id','=',$cashier_id)
+                    ->delete();
+            }
+          
+        }
+        return redirect()->to('cashier/sellMedicines')->with('yes','asdf adsf');
         return view('cashier.sellMedicines');
     }
 
@@ -105,9 +234,9 @@ class cashierController extends Controller
             if($filteredData->isEmpty())
             return redirect()->to('cashier/sellMedicines')->with('msgEmpty','empty set');
             
-            $cart=cart::get();
+            $cart=$this->getCart();
 
-            return view('cashier/sellMedicines',compact('filteredData'));
+            return view('cashier/sellMedicines',compact('filteredData','cart'));
         }
         else
         {
@@ -177,26 +306,6 @@ class cashierController extends Controller
         return view('cashier.orderHistory',compact('orders'));
     }
 
-    // public function ajax_search(Request $request)
-    //     {
-    //         if($request->ajax())
-    //         {
-    //             $phy_id = $this->getPhyId();
-    //             $searchByAjax = $request->searchByAjax;
-        
-    //             try {
-    //                 $data = medicine::where('name', 'like', '%' . $searchByAjax . '%')
-    //                     ->where('pharmacy_id', '=', $phy_id)
-    //                     ->get();
-        
-    //                 return view('cashier.ajax_search', ['data' => $data])->render();
-    //             } catch (\Exception $e) {
-    //                 // Log the exception or display the error message
-    //                 dd($e->getMessage());
-    //             }
-    //         }
-    //     }
-
     public function liveSearchTable(Request $request)
     {
         if($request->ajax()){
@@ -242,6 +351,58 @@ class cashierController extends Controller
             return $output;
         }
     }
-        
+
+    public function liveSearchTableMedicines(Request $request)
+    {
+        if($request->ajax())
+        {
+            $filteredData=medicine::where('name','like','%'.$request->search.'%')
+            ->orWhere('chemical_Name','like','%'.$request->search.'%')
+            ->get();
+            $output='';
+            if(count($filteredData)>0)
+            {
+                // $output='
+                // <table border=1>
+                // <thead>
+                //     <tr>
+                //         <td>
+                //             id:
+                //         </td>
+                //         <td>
+                //             name:
+                //         </td>
+                //         <td>
+                //             chemical_Name:
+                //         </td>
+                //     </tr>
+                // </thead>
+                // <tbody>';
+                // foreach($data as $row)
+                // {
+                //     $output.='<tr>
+                //         <td>
+                //         '.$row->id.'
+                //         </td>
+                //         <td>
+                //         '.$row->name.'
+                //         </td>
+                //         <td>
+                //         '.$row->chemical_Name.'
+                //         </td>
+                //     </tr>';
+                // }
+                // $output.='</tbdoy></table>';
+            return view('cashier/sellMedicines',compact('filteredData'));
+                return ($filteredData);
+            }
+            else
+            {
+                $filteredData='no result found';
+            }
+            return $filteredData;
+        }
+    }
+
 
 }

@@ -100,7 +100,7 @@
                                     @else
                                         Date and Time not available
                                     @endif
-                                    </td>
+                                    </td>   
                                     <td>
                                         @foreach($order->orderDetails as $orderDetails)
                                             <b>{{$orderDetails->medicine->name}}</b>

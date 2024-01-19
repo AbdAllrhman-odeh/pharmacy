@@ -101,6 +101,7 @@ Route::middleware(['cashierMiddleware'])->group(function () {
         Route::get('/orderHistory',[cashierController::class,'orderHistoryPage']);
         // Route::post('/ajax_search',[cashierController::class,'ajax_search'])->name('ajax_search');
         Route::get('search',[cashierController::class,'liveSearchTable']);
+        Route::get('searchMedicines',[cashierController::class,'liveSearchTableMedicines']);
     });
 });
 
