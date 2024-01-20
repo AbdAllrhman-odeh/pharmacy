@@ -33,10 +33,7 @@
 		<i class='bx bx-menu' ></i>
 		<a href="#" class="nav-link">Categories </a>
 		<form action="#">
-			<div class="form-input">
-				<input type="search" placeholder="Search...">
-				<button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
-			</div>
+
 		</form>
 		<!-- mode -->
 		<input type="checkbox" id="switch-mode" hidden>
@@ -111,7 +108,7 @@
 				@endforeach
 			
 					<h3>${{$total}}</h3>
-					<p>Total Sales</p>
+					<p>Today Total Sales </p>
 				</span>
 			</li>
 

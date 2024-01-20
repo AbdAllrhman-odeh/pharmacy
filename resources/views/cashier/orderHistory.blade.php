@@ -27,8 +27,8 @@
 		<i class='bx bx-menu' ></i>
 		<form>
 			<div class="form-input">
-                <input type="search" placeholder="Search By Order Id OR Date" id="search" name="search" onfocus="this.value='' ">
-				<button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
+                <input type="search" placeholder="Search By Order Id OR Medicine Name OR Date" id="search" name="search" onfocus="this.value='' ">
+				<button type="button" class="search-btn"><i class='bx bx-search' ></i></button>
 			</div>
 		</form>
 		<!-- mode -->
@@ -62,8 +62,15 @@
 					</div>
 				</div>
                 
-                <div id="search_list">
+                <div class="table-data">
+                    <div class="order">
+                        <div class="head">
+                            <h3>Searched Order</h3>
+                        </div>
+                        <div id="search_list">
 
+                        </div>
+                    </div>
                 </div>
 	
 				<div class="table-data">

@@ -92,6 +92,8 @@ Route::middleware(['cashierMiddleware'])->group(function () {
         Route::get('/sellMedicines',[cashierController::class,'sellMedicinesPage']);
         Route::post('/checkOut',[cashierController::class,'checkOut'])->name('checkOut');
         Route::post('/addToCart',[cashierController::class,'addToCart'])->name('addToCart');
+        Route::post('/editCart',[cashierController::class,'editCart'])->name('editCart');
+        Route::post('/deleteMedicine',[cashierController::class,'deleteMedicine'])->name('deleteMedicine');
 
         // Route::post('/checkOut',[cashierController::class,'checkOut'])->name('checkOut');
 

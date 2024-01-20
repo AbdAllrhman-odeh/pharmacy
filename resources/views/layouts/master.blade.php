@@ -36,12 +36,12 @@
 					<span class="text">Medicines</span>
 				</a>
 			</li>
-            <li class="@yield('item5')">
+            {{-- <li class="@yield('item5')">
 				<a href="healthInsurance">
                     <i class="fa-solid fa-hospital-user hi"></i>
 					<span class="text">Health Insurance</span>
 				</a>
-			</li>
+			</li> --}}
 			<li class="@yield('item7')">
 				<a href="addCashier">
 					<i class='fas fa-user-plus hi'></i>

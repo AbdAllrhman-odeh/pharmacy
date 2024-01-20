@@ -28,10 +28,21 @@ class adminController extends Controller
         $pharmacy_id=admin::where('user_id','=',$user_id)->first();
         $pharmacy_id=$pharmacy_id->pharmacy_id;
 
-        //get all pharmacy Info with the orders and orderDetails[with the medicine and the cashier information]
-        $pharmacy = Pharmacy::with([ 'orders.orderDetails.medicine','orders.orderDetails.cashier.user'])
+        // //get all pharmacy Info with the orders and orderDetails[with the medicine and the cashier information]
+        // $pharmacy = Pharmacy::with([ 'orders.orderDetails.medicine','orders.orderDetails.cashier.user'])
+        // ->where('id', '=', $pharmacy_id)
+        // ->first();
+
+        $pharmacy = Pharmacy::with([
+            'orders' => function ($query) {
+                $query->orderBy('created_at', 'desc'); // or 'asc' for ascending order
+            },
+            'orders.orderDetails.medicine',
+            'orders.orderDetails.cashier.user'
+        ])
         ->where('id', '=', $pharmacy_id)
         ->first();
+        
 
         // cashiers and admin info in this pharamcy
         $cashiers = $pharmacy->cashiers;
@@ -92,10 +103,12 @@ class adminController extends Controller
             $pharmacy_id=admin::where('user_id','=',$user_id)->first();
             $pharmacy_id=$pharmacy_id->pharmacy_id;
     
-            //pharmacy got the cahsiers and their users table
-            $pharmacy = Pharmacy::with('medicines')
+            $pharmacy = Pharmacy::with(['medicines' => function ($query) {
+                $query->orderBy('quantity', 'asc'); 
+            }])
             ->where('id', '=', $pharmacy_id)
             ->first();
+            
         
             return view('admin/addDrug',compact('pharmacy'));
     }
@@ -158,7 +171,7 @@ class adminController extends Controller
         return view('admin.myStore');
     }
 
-    public function searchMethodForCashier(Request $request)
+    public function searchMethod(Request $request)
     {
         $pharmacy_id=$this->getPhyId();
         $pharmacy = Pharmacy::with('medicines')

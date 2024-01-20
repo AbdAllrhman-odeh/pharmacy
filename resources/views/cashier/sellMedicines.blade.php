@@ -6,6 +6,8 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>Sell Medicines</title>
   <link rel="stylesheet" href="{{asset('addCashier/addCashier.css')}}">
+  
+  
 
     <style>
         .number 
@@ -22,6 +24,44 @@
             padding-top: 5px;
             padding-bottom: 5px;
             
+        }
+		.editForCart{
+			width:30%;
+		}
+        .custom-info-alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: .25rem;
+            color: #0c5460;
+            background-color: #d1ecf1;
+            border-color: #bee5eb;
+            position: relative;
+        }
+
+        .custom-info-alert .close-btn {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            cursor: pointer;
+        }
+
+		.custom-danger-alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: .25rem;
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            position: relative;
+        }
+
+        .custom-danger-alert .close-btn {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            cursor: pointer;
         }
 
     </style>
@@ -55,17 +95,20 @@
 
     <!-- MAIN -->
     <main>
+		@if(session('updateCart'))
+		<div class="custom-info-alert" role="alert">
+			<h1>{{ session('updateCart') }} Quantity Updated Successfully</h1>
+			<span class="close-btn" onclick="hideAlert()">×</span>
+		</div>
+	@endif
+	
+	@if(session('deleteMedicine'))
+		<div class="custom-danger-alert" role="alert">
+			<h1>{{ session('deleteMedicine') }} Deleted Successfully</h1>
+			<span class="close-btn" onclick="hideAlert()">×</span>
+		</div>
+	@endif
 
-		@if(session('added'))
-		<script>
-			Swal.fire({
-			title: "order Completed.",
-			icon: "success",
-			timer: 2500,
-		  });
-		  </script>
-		@endif
-		
 		@if(session('yes'))
 		<script>
 			Swal.fire({
@@ -86,8 +129,6 @@
 			});
 		</script>
 		@endif
-	
-
 
 		<!--cart-->
 		<div class="table-data">
@@ -96,6 +137,9 @@
 				<h3>Cart</h3>
 			</div>
 			@if(isset($cart) && count($cart) > 0)
+			@php
+			$total = 0;
+			@endphp
 			<form action="{{route('checkOut')}}" method="POST">
 				@csrf
 				<table>
@@ -106,7 +150,8 @@
 							<th>Expiry Date</th>
 							<th>Does</th>
 							<th>Detalis</th>
-							<th>Remove/Edit</th>
+							<th>Edit</th>
+							<th>Delete</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -190,12 +235,37 @@
 									<button type="button" class="openModalButton2 status g" data-cashier-id="{{$cartItem->medicines->id}}" onclick="openModal2('{{$cartItem->medicines->id}}')" style="border:none; font-size:15px;">More Info</button>
 								</td>
 								<td>
-									Remove <br>
-									Edit
+									<form action="{{route('editCart')}}" method="POST">
+										@csrf
+										<input type="hidden" value="{{$cartItem->id}}" name="cart_id">
+										<input type="number" min="1" max="{{$cartItem->medicines->quantity}}" value="{{$cartItem->quantity}}" name="newQuantity">
+										<br>
+										<button type="submit" class="openModalButton2 status g" style="border:none; font-size:15px; background:var(--blue); margin-top:5px;">Edit</button>
+										</form>
 								</td>
+								<td>
+									<form action="{{route('deleteMedicine')}}" method="POST">
+										@csrf
+										<input type="hidden" value="{{$cartItem->id}}" name="cart_id">
+										<button type="submit" class="openModalButton2 status g" style="border:none; font-size:15px; background:#dc3545;">Delete</button>
+									</form>
+								</td>
+								<!--handle the total-->
+
+								@php
+								$total += $cartItem->quantity * $cartItem->medicines->price;
+								@endphp
+								<!--end of total-->
 							</tr>
 						@endforeach
 					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="7" style="text-align:center;">
+								<h2>Total: {{ $total }} $</h2>
+							</td>
+						</tr>
+					</tfoot>
 				</table>
 				<div style="text-align:center; margin:10px;">
 					<input type="submit" value="Check Out" style="width:50%">
@@ -315,7 +385,7 @@
 										@csrf
 										<input type="hidden" name="med_id" value="{{$medicine->id}}">
                                     	<input type="number" class="number" min="0" max="{{intval($medicine->quantity)}}" value="0" name="med_quantity">   
-										<input type="submit" value="Add">
+										<button type="submit" class="openModalButton2 status g" style="border:none; font-size:15px; background:var(--blue); margin-left:5px;">Add</button>
 									</form>         
                                 </td>
 							</tr>
@@ -336,5 +406,21 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.min.css">
 <script src="{{ asset('addCashier/addCashier.js') }}" data-errors="{{ $errors->any() }}"></script>
+
+<script>
+    setTimeout(function () {
+        hideAlert('.custom-info-alert');
+
+    }, 4000);
+	setTimeout(function () {
+        hideAlert('.custom-danger-alert');
+
+    }, 4000);
+
+    function hideAlert(selector) {
+        document.querySelector(selector).style.display = 'none';
+    }       
+</script>
+
 </body>
 </html>

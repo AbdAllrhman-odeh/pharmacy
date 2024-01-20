@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
-
+use Ramsey\Uuid\Type\Integer;
 
 class cashierController extends Controller
 {   
@@ -27,6 +27,14 @@ class cashierController extends Controller
         $pharmacy_id=cashier::where('user_id','=',$user_id)->first();
         $pharmacy_id=$pharmacy_id->pharmacy_id;
         return $pharmacy_id;
+    }
+
+    public function getMedicineName($id)
+    {
+        $name=medicine::where('id','=',$id)->first();
+        $name=$name->name;
+
+        return $name;
     }
 
     public function MedcicinesPage()
@@ -83,7 +91,6 @@ class cashierController extends Controller
         $cashier_id=cashier::where('user_id','=',$user_id)->first();
         $cashier_id=$cashier_id->id;
 
-
         $cart=cart::with('medicines')
         ->where('pharmacy_id','=',$pharmacy_id)
         ->where('cashier_id','=',$cashier_id)
@@ -108,9 +115,36 @@ class cashierController extends Controller
         
         $medicine_id=$request->med_id;
         $medicine_quantity=$request->med_quantity;
-
+        
         if($medicine_quantity>0)
         {
+            $checkCart=$this->getCart();
+            $flag=cart::where('pharmacy_id','=',$pharmacy_id)
+                ->where('cashier_id','=',$cashier_id)
+                ->where('medicine_id','=',$medicine_id)
+                ->first();
+                
+                if($flag)
+                {
+                    //[1] Medicine Exists on the cart
+
+                    //handle the quantity
+                    $newQuantity=$flag->quantity+$medicine_quantity;
+
+                    cart::where('pharmacy_id','=',$pharmacy_id)
+                    ->where('cashier_id','=',$cashier_id)
+                    ->where('medicine_id','=',$medicine_id)
+                    ->update([
+                        'quantity'=>$newQuantity,
+                    ]);
+
+                    //get the medicine name
+                    $name=$this->getMedicineName($flag->medicine_id);
+
+                    return redirect()->to('cashier/sellMedicines')->with('updateCart',$name);
+                }
+
+                // [2] Medicine does not exists on the cart
             cart::create([
                 'pharmacy_id'=>$pharmacy_id,
                 'cashier_id'=>$cashier_id,
@@ -176,6 +210,8 @@ class cashierController extends Controller
                     if($new_medicine_quantity==0)
                     {
                         //delete the medicine from the db
+                        //or soft delete
+                        medicine::where('id','=',$med_id)->delete();
                     }
                     //medicine is not out of stock
                     else
@@ -184,7 +220,6 @@ class cashierController extends Controller
                             'quantity'=>$new_medicine_quantity
                         ]);
                     }
-
             }
           
         }
@@ -208,6 +243,33 @@ class cashierController extends Controller
         return redirect()->to('cashier/sellMedicines')->with('yes','asdf adsf');
         return view('cashier.sellMedicines');
     }
+
+    public function editCart(Request $request)
+    {
+        cart::where('id','=',$request->cart_id)->update([
+            'quantity'=>$request->newQuantity
+        ]);
+
+        $cart=cart::where('id','=',$request->cart_id)->first();
+        $med_id=$cart->medicine_id;
+        $med_name=medicine::where('id','=',$med_id)->first();
+        $med_name=$med_name->name;
+
+        return redirect()->to('cashier/sellMedicines')->with('updateCart',$med_name);
+    }
+
+    public function deleteMedicine(Request $request)
+    {
+        $cart=cart::where('id','=',$request->cart_id)->first();
+        $med_id=$cart->medicine_id;
+        $med_name=medicine::where('id','=',$med_id)->first();
+        $med_name=$med_name->name;
+
+        cart::where('id','=',$request->cart_id)->delete();
+
+        return redirect()->to('cashier/sellMedicines')->with('deleteMedicine',$med_name);
+    }
+
 
     public function searchMethodCashier_sell(Request $request)
     {
@@ -299,9 +361,16 @@ class cashierController extends Controller
         $user_id = Auth::id();
         $phy_id=$this->getPhyId();
 
-        $orders=cashier::with('orders.orderDetails.medicine')
-        ->where('user_id','=',$user_id)
+        // $orders=cashier::with('orders.orderDetails.medicine')
+        // ->where('user_id','=',$user_id)
+        // ->first();
+
+        $orders = cashier::with(['orders' => function ($query) {
+            $query->orderBy('created_at', 'desc'); 
+        }, 'orders.orderDetails.medicine'])
+        ->where('user_id', '=', $user_id)
         ->first();
+    
 
         return view('cashier.orderHistory',compact('orders'));
     }
@@ -309,38 +378,77 @@ class cashierController extends Controller
     public function liveSearchTable(Request $request)
     {
         if($request->ajax()){
-            $data=order::where('created_at','like','%'.$request->search.'%')
-            ->orWhere('id','like','%'.$request->search.'%')
-            ->get();
+            // $data=order::with('orderDetails.medicine')
+            //     ->where('created_at','like','%'.$request->search.'%')
+            //     ->orWhere('id','like','%'.$request->search.'%')
+            //     ->get();
+
+            //search by order_id order_date or medicine name
+            $data = order::with('orderDetails.medicine')
+                ->where(function ($query) use ($request)
+                {
+                    $query->where('created_at', 'like', '%' . $request->search . '%')
+                        ->orWhere('id', 'like', '%' . $request->search . '%');
+                })
+                ->orWhereHas('orderDetails.medicine', function ($query) use ($request)
+                {
+                    $query->where('name', 'like', '%' . $request->search . '%');
+                })
+                ->get();
+
+
+
             $output='';
             if(count($data)>0)
             {
                 $output='
                 <table>
                 <thead>
-                    <tr>
-                        <td>
-                            id:
-                        </td>
-                        <td>
-                            name:
-                        </td>
-                        <td>
-                            Quantity:
-                        </td>
-                    </tr>
-                </thead>
-                <tbody>';
+                <tr>
+                    <th>Order Id</th>
+                    <th>Date && Time</th>
+                    <th>Medicine Details</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+                <tbody>';   
                 foreach($data as $row)
                 {
                     $output.='<tr>
                         <td>
                         '.$row->id.'
                         </td>
-                        <td>
-                        '.$row->created_at.'
-                        </td>
-                    </tr>';
+                        <td>Date:
+                        '.$row->created_at->format('Y-m-d').'<br>Time:'.$row->created_at->format('H:i:s').'
+                        </td><td>';
+                        foreach($row->orderDetails as $orderDetails)
+                        {
+                            $output.='<b>'.$orderDetails->medicine->name.'</b>';
+                            if($orderDetails->medicine->type == 'tablet')
+                            {
+                                $output.=' / '.$orderDetails->medicine->does.' MG';
+                                $output.='<details>';
+                                    $output.='<summary>More</summary>';
+                                    $output.='<p><b>Id: '.$orderDetails->medicine->id.'</b></p>';
+                                    $output.='<p><b>Price: $'.$orderDetails->medicine->id.'</b></p>';
+                                    $output.='<p>Exp-date: '.$orderDetails->medicine->exp_date.'</p>';
+                                    $output.='<p>MFG-date: '.$orderDetails->medicine->mfg_date.'</p>';
+                                $output.='</details>';
+                            }
+                        }
+
+                        $output.='</td><td>';
+                        $total=0;
+                        foreach($row->orderDetails as $orderDetails)
+                        {
+                            $output.='*('.$orderDetails->quantity.')<br>';
+                            $total += $orderDetails->quantity * $orderDetails->medicine->price;
+                        }
+        
+
+                        $output.='</td><td>$'.$total;
+                    $output.='</td></tr>';
                 }
                 $output.='</tbdoy></table>';
             }

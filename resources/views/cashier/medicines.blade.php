@@ -18,7 +18,7 @@
 			<i class='bx bx-menu' ></i>
 			<form method="GET" action="{{route('searchMethodCashier')}}">
 				<div class="form-input">
-					<input type="search" placeholder="Search By Order Id OR Date" id="search" name="search" onfocus="this.value='' ">
+					<input type="search" placeholder="Search By Medicine Name or Chemical Name" id="search" name="search" onfocus="this.value='' ">
 					<button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
 				</div>
 			</form>

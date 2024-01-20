@@ -142,7 +142,8 @@
                 <div class="head">
                     <h3>View Medicines</h3>
                 </div>
-                <table>
+
+				<table>
                     <thead>
                         <tr>
                             <th>Name</th>
@@ -271,7 +272,7 @@
 			});
 		}
 	</script>
-	
+
 
 </body>
 </html>
