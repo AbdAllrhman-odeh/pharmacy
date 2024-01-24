@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\alternative_medicine;
 use App\Models\cart;
 use App\Models\cashier;
 use App\Models\medicine;
@@ -45,8 +46,9 @@ class cashierController extends Controller
         $pharmacy = pharmacy::with('medicines')
         ->where('id', '=', $pharmacy_id)
         ->first();
+        $alternatives=alternative_medicine::where('pharmacy_id','=',$pharmacy_id)->get();
                 
-        return view('cashier/medicines',compact('pharmacy'));
+        return view('cashier/medicines',compact('pharmacy','alternatives'));
         // return view('cashier.medicines');
     }
 
@@ -394,7 +396,7 @@ class cashierController extends Controller
                 {
                     $query->where('name', 'like', '%' . $request->search . '%');
                 })
-                ->get();
+                ->get();    
 
 
 
@@ -470,38 +472,7 @@ class cashierController extends Controller
             $output='';
             if(count($filteredData)>0)
             {
-                // $output='
-                // <table border=1>
-                // <thead>
-                //     <tr>
-                //         <td>
-                //             id:
-                //         </td>
-                //         <td>
-                //             name:
-                //         </td>
-                //         <td>
-                //             chemical_Name:
-                //         </td>
-                //     </tr>
-                // </thead>
-                // <tbody>';
-                // foreach($data as $row)
-                // {
-                //     $output.='<tr>
-                //         <td>
-                //         '.$row->id.'
-                //         </td>
-                //         <td>
-                //         '.$row->name.'
-                //         </td>
-                //         <td>
-                //         '.$row->chemical_Name.'
-                //         </td>
-                //     </tr>';
-                // }
-                // $output.='</tbdoy></table>';
-            return view('cashier/sellMedicines',compact('filteredData'));
+                return view('cashier/sellMedicines',compact('filteredData'));
                 return ($filteredData);
             }
             else

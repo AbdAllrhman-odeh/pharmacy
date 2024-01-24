@@ -4,6 +4,7 @@ use App\Http\Controllers\adminController;
 use App\Http\Controllers\cashierController;
 use App\Http\Controllers\homeController;
 use App\Http\Controllers\superAdminController;
+use App\Models\admin;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -66,9 +67,10 @@ Route::middleware(['adminMiddleware'])->group(function () {
        
         Route::get('/addDrug',[adminController::class,'addDrugPage']);
         Route::post('/updateMedicine/{id}',[adminController::class,'updateMedicine'])->name('updateMedicine');
-        Route::post('/deleteMedicine/{id}',[adminController::class,'deleteMedicine'])->name('deleteMedicine');
+        Route::post('/deleteMedicine',[adminController::class,'deleteMedicine'])->name('deleteMedicine');
+        Route::post('/dd',[adminController::class,'dd'])->name('dd');
         Route::post('/addMedicine',[adminController::class,'addMedicine'])->name('addMedicine');
-       
+
         Route::get('/myStore',[adminController::class,'myStorePage']);
         Route::get('/searchMethod',[adminController::class,'searchMethod'])->name('searchMethod');
        
@@ -77,6 +79,10 @@ Route::middleware(['adminMiddleware'])->group(function () {
 
         Route::get('/settings',[adminController::class,'settingsPage']);
         Route::post('/updateInfo',[adminController::class,'updateFunction'])->name('updateFunction');
+
+        Route::get('/alternativeMedicines',[adminController::class,'alternativeMedicines']);
+        Route::post('/alternativeFunction',[adminController::class,'alternativeFunction'])->name('alternativeFunction');
+        Route::post('/delteAlt',[adminController::class,'deleteAlt'])->name('deleteAlt');
     });
 });
 

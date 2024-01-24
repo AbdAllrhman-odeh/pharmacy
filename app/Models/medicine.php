@@ -35,4 +35,9 @@ class medicine extends Model
     {
         return $this->hasMany(order_detalis::class,'medicine_id','id');
     }
+
+    public function alternativeMedicines()
+    {
+        return $this->hasMany(alternative_medicine::class, 'original_medicine_id ');
+    }
 }

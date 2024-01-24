@@ -6,6 +6,10 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>Medicines</title>
   <link rel="stylesheet" href="{{asset('addCashier/addCashier.css')}}">
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.min.css">
+
 </head>
 
 <body>
@@ -48,15 +52,15 @@
 				<form method="POST" action="{{route('addMedicine')}}">
 				@csrf 
 				<div class="input-field">
-					<label for="name">Name: </label>
+					<label>Name: </label>
 					<input type="text" name="name" required />
 				</div>
 				<div class="input-field">
-					<label for="chemical_Name">Chemcial :</label>
+					<label>Chemcial :</label>
 					<input type="text" name="chemical_Name" required />
 				</div>
 				<div class="input-field">
-					<label for="does">Does: </label>
+					<label>Does: </label>
 					<input type="number"  name="does" step="0.1" required />
 				</div>
 				<div class="input-field">
@@ -70,19 +74,19 @@
 					<label for="Cream"> Cream</label>	
 				</div>
 				<div class="input-field">
-					<label for="quantity">Quantity: </label>
+					<label>Quantity: </label>
 					<input type="number"  name="quantity" step="1" required />
 				</div>
 				<div class="input-field">
-					<label for="price">Price: </label>
+					<label>Price: </label>
 					<input type="number" name="price" step="0.01" required />
 				</div>
 				<div class="input-field">
-					<label for="exp_date">EXP-date: </label>
+					<label>EXP-date: </label>
 					<input type="date" name="exp_date" required />
 				</div>
 				<div class="input-field">
-					<label for="mfg_date">MFG-date: </label>
+					<label>MFG-date: </label>
 					<input type="date"  name="mfg_date" required />
 				</div>
 				<input class="button" type="submit" value="Add!">
@@ -181,45 +185,45 @@
 											<form method="POST" action="{{route('updateMedicine',$medicine->id)}}">
 											@csrf
 											<div class="input-field">
-												<label for="id">Id: </label>
+												<label>Id: </label>
 												<input type="text" value="{{$medicine->id}}" name="id" disabled />
 											</div>
 											<div class="input-field">
-												<label for="name">Name: </label>
+												<label>Name: </label>
 												<input type="text" value="{{$medicine->name}}" name="new_name" />
 											</div>
 											<div class="input-field">
-												<label for="chemical_name">Chemcial :</label>
+												<label>Chemcial :</label>
 												<input type="text" value="{{$medicine->chemical_Name}}" name="new_chemical_name" />
 											</div>
 											<div class="input-field">
-												<label for="does">Does: </label>
+												<label>Does: </label>
 												<input type="number" value="{{$medicine->does}}" name="new_does" step="0.1" />
 											</div>
 											<div class="input-field">
-												<input type="radio" id="Liquid" name="new_type" value="liquid" {{ $medicine->type == 'liquid' ? 'checked' : '' }}>
-												<label for="Liquid"> Liquid</label>
+												<input type="radio" id="Liquid{{$medicine->id}}" name="new_type" value="liquid" {{ $medicine->type == 'liquid' ? 'checked' : '' }}>
+												<label for="Liquid{{$medicine->id}}"> Liquid</label>
 										
-												<input type="radio" id="Tablet" name="new_type" value="tablet" {{ $medicine->type == 'tablet' ? 'checked' : '' }}>
-												<label for="Tablet"> Tablet</label>	
+												<input type="radio" id="Tablet{{$medicine->id}}" name="new_type" value="tablet" {{ $medicine->type == 'tablet' ? 'checked' : '' }}>
+												<label for="Tablet{{$medicine->id}}"> Tablet</label>	
 
-												<input type="radio" id="Cream" name="new_type" value="cream" {{ $medicine->type == 'cream' ? 'checked' : '' }}>
-												<label for="Cream"> Cream</label>	
+												<input type="radio" id="Cream{{$medicine->id}}" name="new_type" value="cream" {{ $medicine->type == 'cream' ? 'checked' : '' }}>
+												<label for="Cream{{$medicine->id}}"> Cream</label>	
 											</div>
 											<div class="input-field">
-												<label for="quantity">Quantity: </label>
+												<label>Quantity: </label>
 												<input type="number" value="{{intval($medicine->quantity)}}" name="new_quantity" step="1" />
 											</div>
 											<div class="input-field">
-												<label for="price">price: </label>
+												<label>price: </label>
 												<input type="number" value="{{$medicine->price}}" name="new_price" step="0.01" />
 											</div>
 											<div class="input-field">
-												<label for="price">EXP-date: </label>
+												<label>EXP-date: </label>
 												<input type="date" value="{{$medicine->exp_date}}" name="new_exp_date"/>
 											</div>
 											<div class="input-field">
-												<label for="price">MFG-date: </label>
+												<label>MFG-date: </label>
 												<input type="date" value="{{$medicine->mfg_date}}" name="new_mfg_date"/>
 											</div>
 											<input class="button" type="submit" value="Edit">
@@ -229,10 +233,14 @@
 								</div>
 								<td>
 									<button class="openModalButton2 status g" data-cashier-id="{{$medicine->id}}" onclick="openModal2('{{$medicine->id}}')" style="border:none; font-size:17px;">More Info</button>
-									<form action="{{route('deleteMedicine',$medicine->id)}}" style="margin-top:5px;" method="POST">	
-										@csrf		
-										<button class="status pending" onclick="showConfirmation(event)" style="border:none; font-size:17px;">Delete</button>
-									</form>						
+									<form action="{{route('dd')}}" method="POST">
+										@csrf
+										<input type="hidden" value="{{$medicine->id}}" name="medicine_id" /><br>
+										<button type="submit" class="status pending" onclick="showConfirmation(event)" style="border:none; font-size:17px;">Delete</button>
+									</form>					
+								</td>
+								<td>
+
 								</td>
 							</tr>
 						@endforeach
@@ -246,9 +254,6 @@
   @include('sweetalert::alert')
   @endsection
   @include('sweetalert::alert')
-  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.min.css">
     <script src="{{ asset('addCashier/addCashier.js') }}" data-errors="{{ $errors->any() }}"></script>
 
 	
@@ -267,11 +272,13 @@
 					event.target.closest('form').submit();
 				} else {
 					// User clicked "No" or closed the dialog
-					Swal.fire("Cancelled", "Your item is safe :)", "info");
+					Swal.fire("Cancelled", "Your medicine is safe :)", "info");
 				}
 			});
 		}
 	</script>
+
+	
 
 
 </body>

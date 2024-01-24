@@ -48,6 +48,12 @@
 					<span class="text">Add Cashier</span>
 				</a>
 			</li>
+			<li class="@yield('item5')">
+				<a href="alternativeMedicines">
+                    <i class="bx fa fa-plus" aria-hidden="true"></i>
+					<span class="text">alternative Medicines</span>
+				</a>
+			</li>
             <hr>
         </ul>
 

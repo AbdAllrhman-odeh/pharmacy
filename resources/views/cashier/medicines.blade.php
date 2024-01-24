@@ -6,6 +6,11 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>Medicines</title>
   <link rel="stylesheet" href="{{asset('addCashier/addCashier.css')}}">
+  <style>
+			summary::marker{
+			color:var(--blue);
+		}
+  </style>
 </head>
 
 <body>
@@ -137,6 +142,7 @@
 							<th>Expiry Date</th>
                             <th>Does</th>
 							<th>Detalis</th>
+							<th>Alternative</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -222,6 +228,29 @@
 								<td>
 									<button class="openModalButton2 status g" data-cashier-id="{{$medicine->id}}" onclick="openModal2('{{$medicine->id}}')" style="border:none; font-size:17px;">More Info</button>
 								</td>
+								<td>
+									@if(isset($alternatives) && count($alternatives) > 0)
+										@foreach($alternatives as $alt)
+											@if($alt->originalMedicine->id == $medicine->id)
+												<details>
+													<summary>
+														See Alternative	
+													</summary>
+													<ul>
+														<li>
+															{{ $alt->alternativeMedicine->name }} / {{$alt->alternativeMedicine->does}}
+														</li>
+													</ul>
+												</details>
+											@endif
+										@endforeach
+										@if(count($alternatives) == 0)
+											No Alternative
+										@endif
+									@else
+										Alternative has not been added yet
+									@endif
+								</td>								
 							</tr>
 						@endforeach
                     </tbody>
